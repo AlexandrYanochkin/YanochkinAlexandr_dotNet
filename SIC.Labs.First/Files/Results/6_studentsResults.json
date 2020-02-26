@@ -1,0 +1,50 @@
+[
+  {
+    "Surname": "Biguscus",
+    "Name": "Dues",
+    "Patronymic": "Dadalus",
+    "AverageGrade": 5.625
+  },
+  {
+    "Surname": "Anbitus",
+    "Name": "Fatin",
+    "Patronymic": "Fabucus",
+    "AverageGrade": 6.625
+  },
+  {
+    "Surname": "Banulius",
+    "Name": "Dalus",
+    "Patronymic": "Aldator",
+    "AverageGrade": 6.625
+  },
+  {
+    "Surname": "Dibelius",
+    "Name": "Eutin",
+    "Patronymic": "Dadatus",
+    "AverageGrade": 5.5
+  },
+  {
+    "Surname": "Dofritus",
+    "Name": "Bres",
+    "Patronymic": "Dibocus",
+    "AverageGrade": 6.5
+  },
+  {
+    "Surname": "Bedacio",
+    "Name": "Faes",
+    "Patronymic": "Abicus",
+    "AverageGrade": 4.375
+  },
+  {
+    "Surname": "Alfritus",
+    "Name": "Alius",
+    "Patronymic": "Dabecus",
+    "AverageGrade": 4.375
+  },
+  {
+    "Surname": "Bebelus",
+    "Name": "Datus",
+    "Patronymic": "Dibotin",
+    "AverageGrade": 4.875
+  }
+]

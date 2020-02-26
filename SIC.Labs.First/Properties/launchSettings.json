@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "SIC.Labs.First": {
+      "commandName": "Project",
+      "commandLineArgs": "-i ..\\..\\..\\Files\\Data\\2_TestFile.csv -o ..\\..\\..\\Files\\Results\\2_studentsResults -f xlsx"
+    }
+  }
+}
