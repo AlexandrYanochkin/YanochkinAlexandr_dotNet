@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfManufacturer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Manufacturer>
+    <Id>0</Id>
+    <Name>ManufacturerFirst</Name>
+    <Adress>AdressFirst</Adress>
+    <PhoneNumber>+375295329911</PhoneNumber>
+  </Manufacturer>
+  <Manufacturer>
+    <Id>0</Id>
+    <Name>ManufacturerSecond</Name>
+    <Adress>AdressSecond</Adress>
+    <PhoneNumber>+375295329922</PhoneNumber>
+  </Manufacturer>
+  <Manufacturer>
+    <Id>0</Id>
+    <Name>ManufacturerThird</Name>
+    <Adress>AdressThird</Adress>
+    <PhoneNumber>+375295329933</PhoneNumber>
+  </Manufacturer>
+</ArrayOfManufacturer>

@@ -39,7 +39,7 @@ namespace SIC.Labs.First
 
                 string subjectsStr = students.First().Grades.Select(t => t.Subject).Aggregate((fVal, sVal) => $"{fVal};{sVal}");
 
-                Console.WriteLine($"Фамилия;Имя;Отчество;{subjectsStr}");
+                Console.WriteLine($"Surname;Name;Patronymic;{subjectsStr}");
 
                 students.ForEach(stdnt => Console.WriteLine(stdnt));
 

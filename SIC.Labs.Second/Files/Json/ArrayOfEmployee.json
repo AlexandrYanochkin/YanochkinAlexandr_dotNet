@@ -1,0 +1,20 @@
+[
+  {
+    "Id": 9,
+    "FullName": "Alex",
+    "Age": 25,
+    "PhoneNumber": "+375295552978"
+  },
+  {
+    "Id": 11,
+    "FullName": "Alex",
+    "Age": 25,
+    "PhoneNumber": "+375295552978"
+  },
+  {
+    "Id": 13,
+    "FullName": "Paul",
+    "Age": 28,
+    "PhoneNumber": "+7775558998"
+  }
+]

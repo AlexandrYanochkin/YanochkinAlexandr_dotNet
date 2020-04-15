@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfCommodity xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Commodity>
+    <Id>0</Id>
+    <Name>CommodityFirst</Name>
+    <Price>25.5</Price>
+    <ManufacturerId>5</ManufacturerId>
+  </Commodity>
+  <Commodity>
+    <Id>0</Id>
+    <Name>CommoditySecond</Name>
+    <Price>20.2</Price>
+    <ManufacturerId>10</ManufacturerId>
+  </Commodity>
+  <Commodity>
+    <Id>0</Id>
+    <Name>CommodityThird</Name>
+    <Price>45.5</Price>
+    <ManufacturerId>15</ManufacturerId>
+  </Commodity>
+  <Commodity>
+    <Id>0</Id>
+    <Name>CommodityFour</Name>
+    <Price>15</Price>
+    <ManufacturerId>20</ManufacturerId>
+  </Commodity>
+</ArrayOfCommodity>

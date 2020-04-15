@@ -39,10 +39,10 @@ namespace SIC.Labs.First.Services.Writers
 
             for (int i = 0;i < stdntsRslts.Count; i++)
             {
-                WriteValue(worksheet, i, 0, stdntsRslts[i].Surname);
-                WriteValue(worksheet, i, 1, stdntsRslts[i].Name);
-                WriteValue(worksheet, i, 2, stdntsRslts[i].Patronymic);
-                WriteValue(worksheet, i, 3, stdntsRslts[i].AverageGrade.ToString("F2"));
+                WriteValue(worksheet, (i + 1), 0, stdntsRslts[i].Surname);
+                WriteValue(worksheet, (i + 1), 1, stdntsRslts[i].Name);
+                WriteValue(worksheet, (i + 1), 2, stdntsRslts[i].Patronymic);
+                WriteValue(worksheet, (i + 1), 3, stdntsRslts[i].AverageGrade.ToString("F2"));
             }
 
 

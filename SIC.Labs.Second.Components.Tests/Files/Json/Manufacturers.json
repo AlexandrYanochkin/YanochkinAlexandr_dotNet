@@ -1,0 +1,20 @@
+[
+  {
+    "Id": 0,
+    "Name": "ManufacturerFirst",
+    "Adress": "AdressFirst",
+    "PhoneNumber": "+375295329911"
+  },
+  {
+    "Id": 0,
+    "Name": "ManufacturerSecond",
+    "Adress": "AdressSecond",
+    "PhoneNumber": "+375295329922"
+  },
+  {
+    "Id": 0,
+    "Name": "ManufacturerThird",
+    "Adress": "AdressThird",
+    "PhoneNumber": "+375295329933"
+  }
+]

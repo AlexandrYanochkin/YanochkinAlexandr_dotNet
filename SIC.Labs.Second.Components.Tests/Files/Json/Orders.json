@@ -1,0 +1,12 @@
+[
+  {
+    "Id": 0,
+    "CreationDate": "2015-04-24T00:00:00",
+    "ModificationDate": "2015-05-24T00:00:00",
+    "Status": 2,
+    "Count": 55,
+    "FullPrice": 25.0,
+    "EmployeeId": 1,
+    "StockItemId": 1
+  }
+]

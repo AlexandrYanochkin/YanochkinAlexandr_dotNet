@@ -1,0 +1,14 @@
+[
+  {
+    "Id": 0,
+    "Count": 50,
+    "StockId": 10,
+    "CommodityId": 5
+  },
+  {
+    "Id": 0,
+    "Count": 25,
+    "StockId": 4,
+    "CommodityId": 1
+  }
+]

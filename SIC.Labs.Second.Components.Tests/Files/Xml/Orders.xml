@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfOrder xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Order>
+    <Id>0</Id>
+    <CreationDate>2015-04-24T00:00:00</CreationDate>
+    <ModificationDate>2015-05-24T00:00:00</ModificationDate>
+    <Status>Finished</Status>
+    <Count>55</Count>
+    <FullPrice>25.0</FullPrice>
+    <EmployeeId>1</EmployeeId>
+    <StockItemId>1</StockItemId>
+  </Order>
+</ArrayOfOrder>
