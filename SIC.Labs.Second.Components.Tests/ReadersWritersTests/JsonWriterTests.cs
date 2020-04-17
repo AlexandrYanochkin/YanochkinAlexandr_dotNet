@@ -16,13 +16,13 @@ namespace SIC.Labs.Second.Components.Tests.ReadersWritersTests
             //arrange
             List<Manufacturer> manufacturers = new List<Manufacturer>()
             {
-                new Manufacturer{ Name = "ManufacturerFirst", Adress = "AdressFirst", PhoneNumber = "+375295329911" },
-                new Manufacturer{ Name = "ManufacturerSecond", Adress = "AdressSecond", PhoneNumber = "+375295329922" },
-                new Manufacturer{ Name = "ManufacturerThird", Adress = "AdressThird", PhoneNumber = "+375295329933" },
+                new Manufacturer{ Name = "ManufacturerFirst", Address = "AdressFirst", PhoneNumber = "+375295329911" },
+                new Manufacturer{ Name = "ManufacturerSecond", Address = "AdressSecond", PhoneNumber = "+375295329922" },
+                new Manufacturer{ Name = "ManufacturerThird", Address = "AdressThird", PhoneNumber = "+375295329933" },
             };
 
             //assert
-            Assert.IsTrue( (new JsonSerializer<Manufacturer>()).Test(@"..\..\..\Files\Json\Manufacturers.json", manufacturers));
+            Assert.IsTrue( (new JsonSerializer<Manufacturer>()).WriteValuesAndCheckExistance(@"..\..\..\Files\Json\Manufacturers.json", manufacturers));
         }
 
         [TestMethod]
@@ -37,7 +37,7 @@ namespace SIC.Labs.Second.Components.Tests.ReadersWritersTests
             };
 
             //assert
-            Assert.IsTrue((new JsonSerializer<Employee>()).Test(@"..\..\..\Files\Json\Employees.json", employees));
+            Assert.IsTrue((new JsonSerializer<Employee>()).WriteValuesAndCheckExistance(@"..\..\..\Files\Json\Employees.json", employees));
         }
 
         [TestMethod]
@@ -53,7 +53,7 @@ namespace SIC.Labs.Second.Components.Tests.ReadersWritersTests
             };
 
             //assert
-            Assert.IsTrue((new JsonSerializer<Commodity>()).Test(@"..\..\..\Files\Json\Commodities.json", commodities));
+            Assert.IsTrue((new JsonSerializer<Commodity>()).WriteValuesAndCheckExistance(@"..\..\..\Files\Json\Commodities.json", commodities));
         }
 
         [TestMethod]
@@ -67,7 +67,7 @@ namespace SIC.Labs.Second.Components.Tests.ReadersWritersTests
             };
 
             //assert
-            Assert.IsTrue((new JsonSerializer<StockItem>()).Test(@"..\..\..\Files\Json\StockItems.json", stockItems));
+            Assert.IsTrue((new JsonSerializer<StockItem>()).WriteValuesAndCheckExistance(@"..\..\..\Files\Json\StockItems.json", stockItems));
         }
 
         [TestMethod]
@@ -81,7 +81,7 @@ namespace SIC.Labs.Second.Components.Tests.ReadersWritersTests
             };
 
             //assert
-            Assert.IsTrue((new JsonSerializer<Stock>()).Test(@"..\..\..\Files\Json\Stock.json", stocks));
+            Assert.IsTrue((new JsonSerializer<Stock>()).WriteValuesAndCheckExistance(@"..\..\..\Files\Json\Stock.json", stocks));
         }
 
         [TestMethod]
@@ -90,12 +90,19 @@ namespace SIC.Labs.Second.Components.Tests.ReadersWritersTests
             //arrange
             List<Order> orders = new List<Order>()
             {
-                new Order { CreationDate = DateTime.Parse("24.04.2015"), ModificationDate = DateTime.Parse("24.05.2015"),
-                    Count = 55, FullPrice = 25.0M, Status = OrderStatus.Finished, StockItemId = 1, EmployeeId = 1  }
+                new Order {
+                    CreationDate = new DateTime(2015,04,04),
+                    ModificationDate = new DateTime(2015,04,10),
+                    Count = 55,
+                    FullPrice = 25.0M,
+                    Status = OrderStatus.Finished,
+                    StockItemId = 1,
+                    EmployeeId = 1
+                }
             };
 
             //assert
-            Assert.IsTrue((new JsonSerializer<Order>()).Test(@"..\..\..\Files\Json\Orders.json", orders));
+            Assert.IsTrue((new JsonSerializer<Order>()).WriteValuesAndCheckExistance(@"..\..\..\Files\Json\Orders.json", orders));
         }
 
     }

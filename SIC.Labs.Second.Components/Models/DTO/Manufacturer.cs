@@ -9,7 +9,7 @@ namespace SIC.Labs.Second.Components.Models.DTO
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public string Adress { get; set; }
+        public string Address { get; set; }
         public string PhoneNumber { get; set; }
 
 
@@ -17,13 +17,13 @@ namespace SIC.Labs.Second.Components.Models.DTO
         public override bool Equals(object obj)
             => (obj is Manufacturer manufacturer &&
                 manufacturer.Name == Name &&
-                manufacturer.Adress == Adress &&
+                manufacturer.Address == Address &&
                 manufacturer.PhoneNumber == PhoneNumber);
 
         public override int GetHashCode()
-            => HashCode.Combine(Name, Adress, PhoneNumber);
+            => HashCode.Combine(Name, Address, PhoneNumber);
 
         public override string ToString()
-            => $"{Id};{Name};{Adress};{PhoneNumber}";      
+            => $"{Id};{Name};{Address};{PhoneNumber}";      
     }
 }

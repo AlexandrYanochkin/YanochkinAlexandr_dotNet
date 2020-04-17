@@ -1,9 +1,10 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SIC.Labs.Second.Components.DAL;
 using SIC.Labs.Second.Components.DAL.Connections;
-using SIC.Labs.Second.Components.DAL.MSSQLRepository;
 using SIC.Labs.Second.Components.Models.DTO;
 using SIC.Labs.Second.Components.Models.Factory;
+using SIC.Labs.Second.Components.Tests.DataBaseWorkers;
+using System.Threading.Tasks;
 
 namespace SIC.Labs.Second.Components.Tests.MSSQLRepository
 {
@@ -14,35 +15,8 @@ namespace SIC.Labs.Second.Components.Tests.MSSQLRepository
 
         public SQLWorker SqlWorker { get; set; } = new SQLWorker(SQLConnector.ConnectionString);
 
-        [TestMethod()]
-        public void CreateTest()
-        {
-            //arrange
-            Employee employee = new Employee
-            {
-                FullName = "TestFullName",
-                Age = 25,
-                PhoneNumber = "TestPhoneNumber"
-            };
-            bool result;
-
-            //act
-            DataAccess.Employees.Create(employee);
-
-            employee.Id = SqlWorker.ExecuteScalar<int>($"SELECT [ID] FROM [Employee] WHERE " +
-                $"[FullName] = '{employee.FullName}' AND " +
-                $"[Age] = {employee.Age} AND " +
-                $"[PhoneNumber] = '{employee.PhoneNumber}'");
-
-            result = (SqlWorker.ExecuteScalar<int>($"SELECT COUNT(*) FROM [Employee] WHERE [ID] = {employee.Id}") > 0);
-            DataAccess.Employees.Delete(employee.Id);
-
-            //assert
-            Assert.IsTrue(result);
-        }
-
-        [TestMethod()]
-        public void ReadTest()
+        [TestMethod]
+        public async Task CreateAsync_ShouldCreateEmployee_True()
         {
             //arrange
             Employee employee = new Employee
@@ -52,23 +26,20 @@ namespace SIC.Labs.Second.Components.Tests.MSSQLRepository
                 PhoneNumber = "TestPhoneNumber"
             };
 
+
             //act
-            DataAccess.Employees.Create(employee);
+            await DataAccess.Employees.CreateAsync(employee);
+            employee.Id = SqlWorker.ExecuteScalar<int>($"SELECT MAX([ID]) FROM [Employee]");
+            Employee employeeForCompare = DataAccess.Employees.ReadAsync(employee.Id).Result;
+            await DataAccess.Employees.DeleteAsync(employee.Id);
 
-            employee.Id = SqlWorker.ExecuteScalar<int>($"SELECT [ID] FROM [Employee] WHERE " +
-                $"[FullName] = '{employee.FullName}' AND " +
-                $"[Age] = {employee.Age} AND " +
-                $"[PhoneNumber] = '{employee.PhoneNumber}'");
-
-            Employee employeeForCompare = DataAccess.Employees.Read(employee.Id);
-            DataAccess.Employees.Delete(employee.Id);
 
             //assert
             Assert.IsTrue(employee.Equals(employeeForCompare));
         }
 
-        [TestMethod()]
-        public void UpdateTest()
+        [TestMethod]
+        public async Task ReadAsync_ShouldReadEmployee_True()
         {
             //arrange
             Employee employee = new Employee
@@ -77,27 +48,44 @@ namespace SIC.Labs.Second.Components.Tests.MSSQLRepository
                 Age = 25,
                 PhoneNumber = "TestPhoneNumber"
             };
-            bool result;
+
 
             //act
-            DataAccess.Employees.Create(employee);
+            await DataAccess.Employees.CreateAsync(employee);
+            employee.Id = SqlWorker.ExecuteScalar<int>("SELECT MAX([ID]) FROM [Employee]");       
+            Employee employeeForCompare = DataAccess.Employees.ReadAsync(employee.Id).Result;
+            await DataAccess.Employees.DeleteAsync(employee.Id);
 
-            employee.Id = SqlWorker.ExecuteScalar<int>($"SELECT [ID] FROM [Employee] WHERE " +
-                $"[FullName] = '{employee.FullName}' AND " +
-                $"[Age] = {employee.Age} AND " +
-                $"[PhoneNumber] = '{employee.PhoneNumber}'");
-
-            employee.FullName += "Updated";
-            DataAccess.Employees.Update(employee);
-            result = (SqlWorker.ExecuteScalar<int>($"SELECT COUNT(*) FROM [Employee] WHERE [ID] = {employee.Id}") > 0);
-            DataAccess.Employees.Delete(employee.Id);
 
             //assert
-            Assert.IsTrue(result);
+            Assert.IsTrue(employee.Equals(employeeForCompare));
         }
 
-        [TestMethod()]
-        public void DeleteTest()
+        [TestMethod]
+        public async Task UpdateAsync_ShouldUpdateEmployee_True()
+        {
+            //arrange
+            Employee employee = new Employee
+            {
+                FullName = "TestFullName",
+                Age = 25,
+                PhoneNumber = "TestPhoneNumber"
+            };
+
+            //act
+            await DataAccess.Employees.CreateAsync(employee);
+            employee.Id = SqlWorker.ExecuteScalar<int>("SELECT MAX([ID]) FROM [Employee]");
+            employee.FullName += "Updated";
+            await DataAccess.Employees.UpdateAsync(employee);
+            Employee employeeForCompare = DataAccess.Employees.ReadAsync(employee.Id).Result;
+            await DataAccess.Employees.DeleteAsync(employee.Id);
+
+            //assert
+            Assert.IsTrue(employeeForCompare.Equals(employee));
+        }
+
+        [TestMethod]
+        public async Task DeleteAsync_ShouldDeleteEmployee_True()
         {
             //arrange
             Employee employee = new Employee
@@ -109,17 +97,14 @@ namespace SIC.Labs.Second.Components.Tests.MSSQLRepository
 
 
             //act
-            DataAccess.Employees.Create(employee);
+            await DataAccess.Employees.CreateAsync(employee);
+            employee.Id = SqlWorker.ExecuteScalar<int>("SELECT MAX([ID]) FROM [Employee]");
+            Employee employeeForCompare = DataAccess.Employees.ReadAsync(employee.Id).Result;
+            await DataAccess.Employees.DeleteAsync(employee.Id);
 
-            employee.Id = SqlWorker.ExecuteScalar<int>($"SELECT [ID] FROM [Employee] WHERE " +
-                $"[FullName] = '{employee.FullName}' AND " +
-                $"[Age] = {employee.Age} AND " +
-                $"[PhoneNumber] = '{employee.PhoneNumber}'");
-
-            DataAccess.Employees.Delete(employee.Id);
 
             //assert
-            Assert.IsTrue(SqlWorker.ExecuteScalar<int>($"SELECT COUNT(*) FROM [Employee] WHERE [ID] = {employee.Id}") == 0);
+            Assert.IsTrue(employeeForCompare.Equals(employee));    
         }
 
     }

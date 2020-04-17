@@ -8,14 +8,14 @@ namespace SIC.Labs.Second.Components.Tests.ReadersWritersTests
 {
     public static class WritersReadersTestExtensions
     {
-        public static bool Test<T>(this IWriter<T> writer, string path,  IEnumerable<T> collection)
+        public static bool WriteValuesAndCheckExistance<T>(this IWriter<T> writer, string path,  IEnumerable<T> collection)
         {
             writer.Write(path, collection);
 
             return File.Exists(path);
         }
 
-        public static bool Test<T>(this IReader<T> reader, string path, IEnumerable<T> collectionForComp)
+        public static bool ReadValuesAndCompareWithCollection<T>(this IReader<T> reader, string path, IEnumerable<T> collectionForComp)
         {
             var collection = reader.Read(path);
 

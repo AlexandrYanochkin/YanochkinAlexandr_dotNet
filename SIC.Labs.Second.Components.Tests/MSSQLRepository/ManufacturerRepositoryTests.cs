@@ -1,9 +1,10 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SIC.Labs.Second.Components.DAL;
 using SIC.Labs.Second.Components.DAL.Connections;
-using SIC.Labs.Second.Components.DAL.MSSQLRepository;
 using SIC.Labs.Second.Components.Models.DTO;
 using SIC.Labs.Second.Components.Models.Factory;
+using SIC.Labs.Second.Components.Tests.DataBaseWorkers;
+using System.Threading.Tasks;
 
 namespace SIC.Labs.Second.Components.Tests.MSSQLRepository
 {
@@ -14,107 +15,87 @@ namespace SIC.Labs.Second.Components.Tests.MSSQLRepository
 
         public SQLWorker SqlWorker { get; set; } = new SQLWorker(SQLConnector.ConnectionString);
 
-
-        [TestMethod()]
-        public void CreateTest()
+        [TestMethod]
+        public async Task CreateAsync_ShouldCreateManufacturer_True()
         {
             //arrange
             Manufacturer manufacturer = new Manufacturer
             {
                 Name = "TestName",
-                Adress = "TestAdress",
+                Address = "TestAdress",
                 PhoneNumber = "TestPhone"
             };
-            bool result;
 
             //act
-            DataAccess.Manufacturers.Create(manufacturer);
-            manufacturer.Id = SqlWorker.ExecuteScalar<int>($"SELECT [ID] FROM [Manufacturer] WHERE " +
-                $"[Name] = '{manufacturer.Name}' AND " +
-                $"[Adress] = '{manufacturer.Adress}' AND" +
-                $"[PhoneNumber] = '{manufacturer.PhoneNumber}'");
-
-            result = (SqlWorker.ExecuteScalar<int>($"SELECT COUNT(*) FROM [Manufacturer] WHERE [ID] = {manufacturer.Id}") > 0);
-            DataAccess.Manufacturers.Delete(manufacturer.Id);
-
-            //assert
-            Assert.IsTrue(result);
-        }
-
-        [TestMethod()]
-        public void ReadTest()
-        {
-            //arrange
-            Manufacturer manufacturer = new Manufacturer
-            {
-                Name = "TestName",
-                Adress = "TestAdress",
-                PhoneNumber = "TestPhone"
-            };
-            bool result;
-
-            //act
-            DataAccess.Manufacturers.Create(manufacturer);
-            manufacturer.Id = SqlWorker.ExecuteScalar<int>($"SELECT [ID] FROM [Manufacturer] WHERE " +
-                $"[Name] = '{manufacturer.Name}' AND " +
-                $"[Adress] = '{manufacturer.Adress}' AND" +
-                $"[PhoneNumber] = '{manufacturer.PhoneNumber}'");
-
-            Manufacturer manufacturerForCompare = DataAccess.Manufacturers.Read(manufacturer.Id);
-            DataAccess.Manufacturers.Delete(manufacturer.Id);
+            await DataAccess.Manufacturers.CreateAsync(manufacturer);
+            manufacturer.Id = SqlWorker.ExecuteScalar<int>("SELECT MAX([ID]) FROM [Manufacturer]");
+            Manufacturer manufacturerForCompare = DataAccess.Manufacturers.ReadAsync(manufacturer.Id).Result;
+            await DataAccess.Manufacturers.DeleteAsync(manufacturer.Id);
 
             //assert
             Assert.IsTrue(manufacturer.Equals(manufacturerForCompare));
         }
 
-        [TestMethod()]
-        public void UpdateTest()
+        [TestMethod]
+        public async Task ReadAsync_ShouldReadManufacturer_True()
         {
             //arrange
             Manufacturer manufacturer = new Manufacturer
             {
                 Name = "TestName",
-                Adress = "TestAdress",
+                Address = "TestAdress",
                 PhoneNumber = "TestPhone"
             };
-            bool result;
 
             //act
-            DataAccess.Manufacturers.Create(manufacturer);
-            manufacturer.Id = SqlWorker.ExecuteScalar<int>($"SELECT [ID] FROM [Manufacturer] WHERE " +
-                $"[Name] = '{manufacturer.Name}' AND " +
-                $"[Adress] = '{manufacturer.Adress}' AND" +
-                $"[PhoneNumber] = '{manufacturer.PhoneNumber}'");
-
-            manufacturer.Name += "Updated";
-            DataAccess.Manufacturers.Update(manufacturer);
-            result = (SqlWorker.ExecuteScalar<int>($"SELECT COUNT(*) FROM [Manufacturer] WHERE [ID] = {manufacturer.Id}") > 0);
-            DataAccess.Manufacturers.Delete(manufacturer.Id);
+            await DataAccess.Manufacturers.CreateAsync(manufacturer);
+            manufacturer.Id = SqlWorker.ExecuteScalar<int>("SELECT MAX([ID]) FROM [Manufacturer]");
+            Manufacturer manufacturerForCompare = DataAccess.Manufacturers.ReadAsync(manufacturer.Id).Result;
+            await DataAccess.Manufacturers.DeleteAsync(manufacturer.Id);
 
             //assert
-            Assert.IsTrue(result);
+            Assert.IsTrue(manufacturer.Equals(manufacturerForCompare));
         }
 
-        [TestMethod()]
-        public void DeleteTest()
+        [TestMethod]
+        public async Task UpdateAsync_ShouldUpdateManufacturer_True()
         {
             //arrange
             Manufacturer manufacturer = new Manufacturer
             {
                 Name = "TestName",
-                Adress = "TestAdress",
+                Address = "TestAdress",
+                PhoneNumber = "TestPhone"
+            };
+
+            //act
+            await DataAccess.Manufacturers.CreateAsync(manufacturer);
+            manufacturer.Id = SqlWorker.ExecuteScalar<int>("SELECT MAX([ID]) FROM [Manufacturer]");
+            manufacturer.Name += "Updated";
+            await DataAccess.Manufacturers.UpdateAsync(manufacturer);
+            Manufacturer manufacturerForCompare = DataAccess.Manufacturers.ReadAsync(manufacturer.Id).Result;
+            await DataAccess.Manufacturers.DeleteAsync(manufacturer.Id);
+
+            //assert
+            Assert.IsTrue(manufacturer.Equals(manufacturerForCompare));
+        }
+
+        [TestMethod]
+        public async Task DeleteAsync_ShouldDeleteManufacturer_True()
+        {
+            //arrange
+            Manufacturer manufacturer = new Manufacturer
+            {
+                Name = "TestName",
+                Address = "TestAdress",
                 PhoneNumber = "TestPhone"
             };
             bool result;
 
             //act
-            DataAccess.Manufacturers.Create(manufacturer);
-            manufacturer.Id = SqlWorker.ExecuteScalar<int>($"SELECT [ID] FROM [Manufacturer] WHERE " +
-                $"[Name] = '{manufacturer.Name}' AND " +
-                $"[Adress] = '{manufacturer.Adress}' AND" +
-                $"[PhoneNumber] = '{manufacturer.PhoneNumber}'");
-
-            DataAccess.Manufacturers.Delete(manufacturer.Id);
+            await DataAccess.Manufacturers.CreateAsync(manufacturer);
+            manufacturer.Id = SqlWorker.ExecuteScalar<int>("SELECT MAX([ID]) FROM [Manufacturer]");
+            await DataAccess.Manufacturers.DeleteAsync(manufacturer.Id);
 
             //assert
             Assert.IsTrue(SqlWorker.ExecuteScalar<int>($"SELECT COUNT(*) FROM [Manufacturer] WHERE [ID] = {manufacturer.Id}") == 0);
@@ -122,3 +103,5 @@ namespace SIC.Labs.Second.Components.Tests.MSSQLRepository
 
     }
 }
+
+

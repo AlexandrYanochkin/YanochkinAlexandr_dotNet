@@ -3,6 +3,7 @@ using SIC.Labs.Second.Components.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace SIC.Labs.Second.Components.DAL.MSSQLRepository
 {
@@ -12,17 +13,22 @@ namespace SIC.Labs.Second.Components.DAL.MSSQLRepository
         {
         }
 
-        public void Create(Order item)
-            => ExecuteNonQuery($"INSERT INTO [Order] VALUES " +
-                $"('{item.CreationDate.ToString("MM-dd-yyyy")}','{item.ModificationDate.ToString("MM-dd-yyyy")}',{(int)item.Status}," +
-                $"{item.Count},{item.FullPrice},{item.StockItemId},{item.EmployeeId})");
+        public Task CreateAsync(Order item)
+            => ExecuteNonQueryAsync($"INSERT INTO [Order] VALUES " +
+                $"('{item.CreationDate.ToString("MM-dd-yyyy")}'," +
+                $"'{item.ModificationDate.ToString("MM-dd-yyyy")}'," +
+                $"{(int)item.Status}," +
+                $"{item.Count}," +
+                $"{item.FullPrice}," +
+                $"{item.StockItemId}," +
+                $"{item.EmployeeId})");
 
-        public void Delete(int id)
-            => ExecuteNonQuery($"DELETE FROM [Order] WHERE [ID] = {id}");
+        public Task DeleteAsync(int id)
+            => ExecuteNonQueryAsync($"DELETE FROM [Order] WHERE [ID] = {id}");
 
-        public IEnumerable<Order> GetCollection()
+        public Task<IEnumerable<Order>> GetCollectionAsync()
         {
-            return ReadItems($"SELECT * FROM [Order]", sqlReader => new Order
+            return ReadItemsAsync($"SELECT * FROM [Order]", sqlReader => new Order
             {
                 Id = sqlReader.GetInt32(0),
                 CreationDate = sqlReader.GetDateTime(1),
@@ -35,9 +41,9 @@ namespace SIC.Labs.Second.Components.DAL.MSSQLRepository
             });
         }
 
-        public Order Read(int id)
+        public Task<Order> ReadAsync(int id)
         {
-            return ReadItem($"SELECT * FROM [Order] WHERE [ID] = {id}", sqlReader => new Order
+            return ReadItemAsync($"SELECT * FROM [Order] WHERE [ID] = {id}", sqlReader => new Order
             {
                 Id = sqlReader.GetInt32(0),
                 CreationDate = sqlReader.GetDateTime(1),
@@ -50,8 +56,8 @@ namespace SIC.Labs.Second.Components.DAL.MSSQLRepository
             });
         }
 
-        public void Update(Order item)
-            => ExecuteNonQuery($"UPDATE [Order] SET " +
+        public Task UpdateAsync(Order item)
+            => ExecuteNonQueryAsync($"UPDATE [Order] SET " +
                 $"[CreationDate] = '{item.CreationDate.ToString("MM-dd-yyyy")}'," +
                 $"[ModificationDate] = '{item.ModificationDate.ToString("MM-dd-yyyy")}'," +
                 $"[Status] = {(int)item.Status}," +
@@ -59,6 +65,6 @@ namespace SIC.Labs.Second.Components.DAL.MSSQLRepository
                 $"[FullPrice] = {item.FullPrice}," +
                 $"[StockItemID] = {item.StockItemId}," +
                 $"[EmployeeID] = {item.EmployeeId}" +
-                $"WHERE [ID] = {item.Id}");
+                $" WHERE [ID] = {item.Id}");
     }
 }

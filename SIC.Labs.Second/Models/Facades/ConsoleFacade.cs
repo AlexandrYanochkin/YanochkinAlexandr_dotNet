@@ -4,6 +4,7 @@ using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using SIC.Labs.Second.Components.DAL;
 using SIC.Labs.Second.Components.Models.Exceptions;
 using SIC.Labs.Second.Components.Services.Interfaces;
@@ -36,15 +37,15 @@ namespace SIC.Labs.Second.Models.Facades.ConsoleFacades
 
 
 
-        public override void CreateItem(object sender, EventArgs e)
+        public override async void CreateItem(object sender, EventArgs e)
         {
             try
             {
                 InputOfItem.InputItem(out T item);
 
-                Repository.Create(item);
+                await Repository.CreateAsync(item);
             }
-            catch(FormatException ex)
+            catch (FormatException ex)
             {
                 Console.WriteLine(ex.Message);
             }
@@ -60,7 +61,7 @@ namespace SIC.Labs.Second.Models.Facades.ConsoleFacades
             {
                 Console.WriteLine(ex.Message);
             }
-            catch(SqlException ex)
+            catch (SqlException ex)
             {
                 Console.WriteLine(ex.Message);
             }
@@ -77,7 +78,7 @@ namespace SIC.Labs.Second.Models.Facades.ConsoleFacades
                 Console.WriteLine($"Input Id of {typeof(T).Name}:");
                 int id = int.Parse(Console.ReadLine());
 
-                var item = Repository.Read(id);
+                var item = Repository.ReadAsync(id);
 
                 Console.WriteLine(item);
             }
@@ -106,11 +107,11 @@ namespace SIC.Labs.Second.Models.Facades.ConsoleFacades
                 Console.WriteLine("\nInput Id of Item:");
                 int id = int.Parse(Console.ReadLine());
 
-                var item = Repository.Read(id);
+                var item = Repository.ReadAsync(id).Result;
 
                 InputOfItem.InputItem(out item);
 
-                Repository.Update(item);
+                Repository.UpdateAsync(item);
             }
             catch (FormatException ex)
             {
@@ -145,7 +146,7 @@ namespace SIC.Labs.Second.Models.Facades.ConsoleFacades
                 Console.WriteLine("\nInput Id for Delete:");
                 int id = int.Parse(Console.ReadLine());
 
-                Repository.Delete(id);
+                Repository.DeleteAsync(id);
             }
             catch (FormatException ex)
             {
@@ -172,7 +173,7 @@ namespace SIC.Labs.Second.Models.Facades.ConsoleFacades
             try
             {
                 Console.WriteLine();
-                var collection = Repository.GetCollection().ToList();
+                var collection = Repository.GetCollectionAsync().Result.ToList();
                 collection.ForEach(item => Console.WriteLine(item));
                 Console.WriteLine();
             }
@@ -189,7 +190,7 @@ namespace SIC.Labs.Second.Models.Facades.ConsoleFacades
                 var collection = Reader.Read(PathToFile);
 
                 foreach (var item in collection)
-                    Repository.Create(item);
+                    Repository.CreateAsync(item);
 
                 Console.WriteLine("Done!!!");
             }
@@ -216,7 +217,7 @@ namespace SIC.Labs.Second.Models.Facades.ConsoleFacades
         {
             try
             {
-                var collection = Repository.GetCollection();
+                var collection = Repository.GetCollectionAsync().Result;
 
                 Writer.Write(PathToFile, collection);
 

@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SIC.Labs.Second.Components"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SIC.Labs.Second", "SIC.Labs.Second\SIC.Labs.Second.csproj", "{07ECEAAB-9B8B-446C-AE91-7B4434101FDA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SIC.Labs.Second.Components.Tests", "SIC.Labs.Second.Components.Tests\SIC.Labs.Second.Components.Tests.csproj", "{9FE0C58E-6871-490C-BC60-1643DBD190F2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SIC.Labs.Second.Components.Tests", "SIC.Labs.Second.Components.Tests\SIC.Labs.Second.Components.Tests.csproj", "{9FE0C58E-6871-490C-BC60-1643DBD190F2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -3,6 +3,7 @@ using SIC.Labs.Second.Components.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace SIC.Labs.Second.Components.DAL.MSSQLRepository
 {
@@ -12,16 +13,16 @@ namespace SIC.Labs.Second.Components.DAL.MSSQLRepository
         {
         }
 
-        public void Create(StockItem item)
-            => ExecuteNonQuery($"INSERT INTO [StockItem] VALUES " +
+        public Task CreateAsync(StockItem item)
+            => ExecuteNonQueryAsync($"INSERT INTO [StockItem] VALUES " +
                 $"({item.Count},{item.StockId},{item.CommodityId})");
 
-        public void Delete(int id)
-            => ExecuteNonQuery($"DELETE FROM [StockItem] WHERE [ID] = {id}");
+        public Task DeleteAsync(int id)
+            => ExecuteNonQueryAsync($"DELETE FROM [StockItem] WHERE [ID] = {id}");
 
-        public IEnumerable<StockItem> GetCollection()
+        public Task<IEnumerable<StockItem>> GetCollectionAsync()
         {
-            return ReadItems($"SELECT * FROM [StockItem]", sqlReader => new StockItem
+            return ReadItemsAsync($"SELECT * FROM [StockItem]", sqlReader => new StockItem
             {
                 Id = sqlReader.GetInt32(0),
                 Count = sqlReader.GetInt32(1),
@@ -30,9 +31,9 @@ namespace SIC.Labs.Second.Components.DAL.MSSQLRepository
             });
         }
 
-        public StockItem Read(int id)
+        public Task<StockItem> ReadAsync(int id)
         {
-            return ReadItem($"SELECT * FROM [StockItem] WHERE [ID] = {id}", sqlReader => new StockItem
+            return ReadItemAsync($"SELECT * FROM [StockItem] WHERE [ID] = {id}", sqlReader => new StockItem
             {
                 Id = sqlReader.GetInt32(0),
                 Count = sqlReader.GetInt32(1),
@@ -41,11 +42,11 @@ namespace SIC.Labs.Second.Components.DAL.MSSQLRepository
             });
         }
 
-        public void Update(StockItem item)
-            => ExecuteNonQuery($"UPDATE [StockItem] SET " +
+        public Task UpdateAsync(StockItem item)
+            => ExecuteNonQueryAsync($"UPDATE [StockItem] SET " +
                 $"[Count] = {item.Count}," +
                 $"[StockID] = {item.StockId}," +
-                $"[CommodityID] = {item.CommodityId}," +
+                $"[CommodityID] = {item.CommodityId}" +
                 $"WHERE [ID] = {item.Id}");
     }
 }

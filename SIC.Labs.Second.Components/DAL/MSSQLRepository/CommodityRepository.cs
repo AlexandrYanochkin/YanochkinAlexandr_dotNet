@@ -7,24 +7,22 @@ namespace SIC.Labs.Second.Components.DAL.MSSQLRepository
 {
     public class CommodityRepository : BaseRepository, IRepository<Commodity>
     {
-
         public CommodityRepository(string connectionString) : base(connectionString)
         {
         }
 
-
-        public void Create(Commodity item)
-            => ExecuteNonQuery($"INSERT INTO [Commodity] VALUES " +
+        public Task CreateAsync(Commodity item)
+            => ExecuteNonQueryAsync($"INSERT INTO [Commodity] VALUES " +
                 $"('{item.Name}'," +
                 $"'{item.Price}'," +
                 $"{item.ManufacturerId})");
 
-        public void Delete(int id)
-            => ExecuteNonQuery($"DELETE FROM [Commodity] WHERE [ID] = {id}");
+        public Task DeleteAsync(int id)
+            => ExecuteNonQueryAsync($"DELETE FROM [Commodity] WHERE [ID] = {id}");
 
-        public Commodity Read(int id)
+        public Task<Commodity> ReadAsync(int id)
         {
-            return ReadItem($"SELECT * FROM [Commodity] WHERE [ID] = {id}", sqlReader => new Commodity
+            return ReadItemAsync($"SELECT * FROM [Commodity] WHERE [ID] = {id}", sqlReader => new Commodity
             {
                 Id = sqlReader.GetInt32(0),
                 Name = sqlReader.GetString(1),
@@ -33,16 +31,16 @@ namespace SIC.Labs.Second.Components.DAL.MSSQLRepository
             });
         }
 
-        public void Update(Commodity item)
-           => ExecuteNonQuery($"UPDATE [Commodity] SET " +
+        public Task UpdateAsync(Commodity item)
+           => ExecuteNonQueryAsync($"UPDATE [Commodity] SET " +
                $"[Name] = '{item.Name}'," +
                $"[Price] = {item.Price}," +
                $"[ManufacturerID] = {item.ManufacturerId}" +
                $" WHERE [ID] = {item.Id}");
 
-        public IEnumerable<Commodity> GetCollection()
+        public Task<IEnumerable<Commodity>> GetCollectionAsync()
         {
-            return ReadItems($"SELECT * FROM [Commodity]", sqlReader => new Commodity
+            return ReadItemsAsync($"SELECT * FROM [Commodity]", sqlReader => new Commodity
             {
                 Id = sqlReader.GetInt32(0),
                 Name = sqlReader.GetString(1),

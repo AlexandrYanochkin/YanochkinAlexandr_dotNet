@@ -16,14 +16,14 @@ namespace SIC.Labs.Second.Services.ConsoleInputOfItems
             manufacturer.Name = Console.ReadLine();
 
             Console.WriteLine("Input manufacturer's adress:");
-            manufacturer.Adress = Console.ReadLine();
+            manufacturer.Address = Console.ReadLine();
 
             Console.WriteLine("Input manufacturer's phone number:");
             manufacturer.PhoneNumber = Console.ReadLine();
 
 
             if (string.IsNullOrEmpty(manufacturer.Name) ||
-                string.IsNullOrEmpty(manufacturer.Adress) ||
+                string.IsNullOrEmpty(manufacturer.Address) ||
                 string.IsNullOrEmpty(manufacturer.PhoneNumber))
                 throw new ArgumentException("Incorrect value of manufacturer's field!!!");
 

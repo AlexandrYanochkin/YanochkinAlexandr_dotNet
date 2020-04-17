@@ -1,6 +1,7 @@
 ﻿using SIC.Labs.Second.Components.Models.DTO;
 using SIC.Labs.Second.Components.Services.Interfaces;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SIC.Labs.Second.Components.DAL.MSSQLRepository
 {
@@ -10,17 +11,18 @@ namespace SIC.Labs.Second.Components.DAL.MSSQLRepository
         {
         }
 
+        public Task CreateAsync(Stock item)
+            => ExecuteNonQueryAsync($"INSERT INTO [Stock] VALUES" +
+                $" ('{item.Name}'," +
+                $" '{item.Address}'," +
+                $" {item.Allowance})");
 
-        public void Create(Stock item)
-            => ExecuteNonQuery($"INSERT INTO [Stocks] VALUES" +
-                $" ({item.Name},{item.Address},{item.Allowance})");
+        public Task DeleteAsync(int id)
+            => ExecuteNonQueryAsync($"DELETE FROM [Stock] WHERE [ID] = {id}");
 
-        public void Delete(int id)
-            => ExecuteNonQuery($"DELETE FROM [Stocks] WHERE [ID] = {id}");
-
-        public Stock Read(int id)
+        public Task<Stock> ReadAsync(int id)
         {
-            return ReadItem($"SELECT * FROM [Stocks] WHERE [ID] = {id}",sqlReader => new Stock
+            return ReadItemAsync($"SELECT * FROM [Stock] WHERE [ID] = {id}",sqlReader => new Stock
             {
                 Id = sqlReader.GetInt32(0),
                 Name = sqlReader.GetString(1),
@@ -29,16 +31,16 @@ namespace SIC.Labs.Second.Components.DAL.MSSQLRepository
             });
         }
 
-        public void Update(Stock item)
-         => ExecuteNonQuery($"UPDATE [Stocks] SET" +
+        public Task UpdateAsync(Stock item)
+         => ExecuteNonQueryAsync($"UPDATE [Stock] SET" +
                 $" [Name] = '{item.Name}'," +
                 $" [Address] = '{item.Address}'," +
                 $" [Allowance] = '{item.Allowance}'" +
                 $"WHERE [ID] = {item.Id}");
 
-        public IEnumerable<Stock> GetCollection()
+        public Task<IEnumerable<Stock>> GetCollectionAsync()
         {
-            return ReadItems($"SELECT * FROM [Stocks]", sqlReader => new Stock
+            return ReadItemsAsync($"SELECT * FROM [Stock]", sqlReader => new Stock
             { 
                 Id = sqlReader.GetInt32(0),
                 Name = sqlReader.GetString(1),

@@ -5,17 +5,14 @@ using System.Threading.Tasks;
 
 namespace SIC.Labs.Second.Components.DAL.MSSQLRepository
 {
-    public class BaseRepository : IDisposable
+    public abstract class BaseRepository : IDisposable
     {
         protected SqlConnection sqlConnection;
-
 
         public BaseRepository(string connectionString)
         {
             sqlConnection = new SqlConnection(connectionString);
         }
-
-
 
         protected void ExecuteNonQuery(string command)
         {
@@ -72,24 +69,20 @@ namespace SIC.Labs.Second.Components.DAL.MSSQLRepository
             return item;
         }
 
-
-        protected async void ExecuteNonQueryAsync(string command)
+        protected Task ExecuteNonQueryAsync(string command)
         {
-            await Task.Run(() => ExecuteNonQuery(command));
+            return Task.Run(() => ExecuteNonQuery(command));
         }
 
-        protected async Task<T> ReadItemAsync<T>(string command, Func<SqlDataReader,T> readItem)
+        protected Task<T> ReadItemAsync<T>(string command, Func<SqlDataReader,T> readItem)
         {
-            return await Task.Run(() => ReadItem(command, readItem));
+            return Task.Run(() => ReadItem(command, readItem));
         }
 
-        protected IEnumerable<T> ReadItemsAsync<T>(string command, Func<SqlDataReader, T> readFunc)
+        protected Task<IEnumerable<T>> ReadItemsAsync<T>(string command, Func<SqlDataReader, T> readFunc)
         {
-            return Task.Run(() => ReadItems(command, readFunc)).Result;
+            return Task.Run(() => ReadItems(command, readFunc));
         }
-
-
-
 
         public void Dispose()
             => sqlConnection.Dispose();

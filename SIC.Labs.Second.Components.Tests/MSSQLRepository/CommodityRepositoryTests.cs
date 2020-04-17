@@ -1,9 +1,10 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SIC.Labs.Second.Components.DAL;
 using SIC.Labs.Second.Components.DAL.Connections;
-using SIC.Labs.Second.Components.DAL.MSSQLRepository;
 using SIC.Labs.Second.Components.Models.DTO;
 using SIC.Labs.Second.Components.Models.Factory;
+using SIC.Labs.Second.Components.Tests.DataBaseWorkers;
+using System.Threading.Tasks;
 
 namespace SIC.Labs.Second.Components.Tests.MSSQLRepository
 {
@@ -14,35 +15,8 @@ namespace SIC.Labs.Second.Components.Tests.MSSQLRepository
 
         public SQLWorker SqlWorker { get; set; } = new SQLWorker(SQLConnector.ConnectionString);
 
-
         [TestMethod]
-        public void CreateTest()
-        {
-            //arrange
-            Commodity commodity = new Commodity
-            {
-                Name = "TestName",
-                Price = 25,
-                ManufacturerId = 1
-            };
-            bool result;
-
-            //act
-            DataAccess.Commodities.Create(commodity);
-            commodity.Id = SqlWorker.ExecuteScalar<int>($"SELECT * FROM [Commodity] WHERE " +
-                $"[Name] = '{commodity.Name}' AND" +
-                $"[Price] = {commodity.Price} AND " +
-                $"[ManufacturerId] = {commodity.ManufacturerId}");
-
-            result = (SqlWorker.ExecuteScalar<int>($"SELECT COUNT(*) FROM [Commodity] WHERE [ID] = {commodity.Id}") > 0);
-            DataAccess.Commodities.Delete(commodity.Id);
-
-            //assert
-            Assert.IsTrue(result);
-        }
-
-        [TestMethod]
-        public void ReadTest()
+        public async Task CreateAsync_ShouldCreateCommodity_True()
         {
             //arrange
             Commodity commodity = new Commodity
@@ -53,21 +27,17 @@ namespace SIC.Labs.Second.Components.Tests.MSSQLRepository
             };
 
             //act
-            DataAccess.Commodities.Create(commodity);
-            commodity.Id = SqlWorker.ExecuteScalar<int>($"SELECT * FROM [Commodity] WHERE " +
-                $"[Name] = '{commodity.Name}' AND" +
-                $"[Price] = {commodity.Price} AND " +
-                $"[ManufacturerId] = {commodity.ManufacturerId}");
-
-            Commodity commodityForCompare = DataAccess.Commodities.Read(commodity.Id); 
-            DataAccess.Commodities.Delete(commodity.Id);
+            await DataAccess.Commodities.CreateAsync(commodity);
+            commodity.Id = SqlWorker.ExecuteScalar<int>($"SELECT MAX([ID]) FROM [Commodity]");
+            Commodity commodityForCompare = DataAccess.Commodities.ReadAsync(commodity.Id).Result;
+            await DataAccess.Commodities.DeleteAsync(commodity.Id);
 
             //assert
             Assert.IsTrue(commodity.Equals(commodityForCompare));
         }
 
         [TestMethod]
-        public void UpdateTest()
+        public async Task ReadAsync_ShouldReadCommodity_True()
         {
             //arrange
             Commodity commodity = new Commodity
@@ -76,27 +46,19 @@ namespace SIC.Labs.Second.Components.Tests.MSSQLRepository
                 Price = 25,
                 ManufacturerId = 1
             };
-            bool result;
 
             //act
-            DataAccess.Commodities.Create(commodity);
-            commodity.Id = SqlWorker.ExecuteScalar<int>($"SELECT * FROM [Commodity] WHERE " +
-                $"[Name] = '{commodity.Name}' AND" +
-                $"[Price] = {commodity.Price} AND " +
-                $"[ManufacturerId] = {commodity.ManufacturerId}");
-
-
-            commodity.Name += "Updated";
-            DataAccess.Commodities.Update(commodity);
-            result = (SqlWorker.ExecuteScalar<int>($"SELECT COUNT(*) FROM [Commodity] WHERE [ID] = {commodity.Id}") > 0);
-            DataAccess.Commodities.Delete(commodity.Id);
+            await DataAccess.Commodities.CreateAsync(commodity);
+            commodity.Id = SqlWorker.ExecuteScalar<int>("SELECT MAX([ID]) FROM [Commodity]");
+            Commodity commodityForCompare = DataAccess.Commodities.ReadAsync(commodity.Id).Result;
+            await DataAccess.Commodities.DeleteAsync(commodity.Id);
 
             //assert
-            Assert.IsTrue(result);
+            Assert.IsTrue(commodity.Equals(commodityForCompare));
         }
 
         [TestMethod]
-        public void DeleteTest()
+        public async Task UpdateAsync_ShouldUpdateCommodity_True()
         {
             //arrange
             Commodity commodity = new Commodity
@@ -107,13 +69,32 @@ namespace SIC.Labs.Second.Components.Tests.MSSQLRepository
             };
 
             //act
-            DataAccess.Commodities.Create(commodity);
-            commodity.Id = SqlWorker.ExecuteScalar<int>($"SELECT * FROM [Commodity] WHERE " +
-                $"[Name] = '{commodity.Name}' AND" +
-                $"[Price] = {commodity.Price} AND " +
-                $"[ManufacturerId] = {commodity.ManufacturerId}");
+            await DataAccess.Commodities.CreateAsync(commodity);
+            commodity.Id = SqlWorker.ExecuteScalar<int>($"SELECT MAX([ID]) FROM [Commodity]");
+            commodity.Name += "Updated";
+            await DataAccess.Commodities.UpdateAsync(commodity);
+            Commodity commodityForCompare = DataAccess.Commodities.ReadAsync(commodity.Id).Result;
+            await DataAccess.Commodities.DeleteAsync(commodity.Id);
 
-            DataAccess.Commodities.Delete(commodity.Id);
+            //assert
+            Assert.IsTrue(commodity.Equals(commodityForCompare));
+        }
+
+        [TestMethod]
+        public async Task DeleteAsync_ShouldDeleteCommodity_True()
+        {
+            //arrange
+            Commodity commodity = new Commodity
+            {
+                Name = "TestName",
+                Price = 25,
+                ManufacturerId = 1
+            };
+
+            //act
+            await DataAccess.Commodities.CreateAsync(commodity);
+            commodity.Id = SqlWorker.ExecuteScalar<int>($"SELECT MAX([ID]) FROM [Commodity]");
+            await DataAccess.Commodities.DeleteAsync(commodity.Id);
 
             //assert
             Assert.IsTrue(SqlWorker.ExecuteScalar<int>($"SELECT COUNT(*) FROM [Commodity] WHERE [ID] = {commodity.Id}") == 0);
@@ -121,3 +102,7 @@ namespace SIC.Labs.Second.Components.Tests.MSSQLRepository
 
     }
 }
+
+
+
+

@@ -10,20 +10,19 @@ namespace SIC.Labs.Second.Components.Tests.ReadersWritersTests
     [TestClass]
     public class XmlReaderTests
     {
-    
         [TestMethod]
         public void TestForManufacturers()
         {
             //arrange
             List<Manufacturer> manufacturers = new List<Manufacturer>()
             {
-                new Manufacturer{ Name = "ManufacturerFirst", Adress = "AdressFirst", PhoneNumber = "+375295329911" },
-                new Manufacturer{ Name = "ManufacturerSecond", Adress = "AdressSecond", PhoneNumber = "+375295329922" },
-                new Manufacturer{ Name = "ManufacturerThird", Adress = "AdressThird", PhoneNumber = "+375295329933" },
+                new Manufacturer{ Name = "ManufacturerFirst", Address = "AdressFirst", PhoneNumber = "+375295329911" },
+                new Manufacturer{ Name = "ManufacturerSecond", Address = "AdressSecond", PhoneNumber = "+375295329922" },
+                new Manufacturer{ Name = "ManufacturerThird", Address = "AdressThird", PhoneNumber = "+375295329933" },
             };
 
             //assert
-            Assert.IsTrue((new XmlDeserializer<Manufacturer>()).Test(@"..\..\..\Files\Xml\Manufacturers.xml", manufacturers));
+            Assert.IsTrue((new XmlDeserializer<Manufacturer>()).ReadValuesAndCompareWithCollection(@"..\..\..\Files\Xml\Manufacturers.xml", manufacturers));
         }
 
         [TestMethod]
@@ -38,7 +37,7 @@ namespace SIC.Labs.Second.Components.Tests.ReadersWritersTests
             };
 
             //assert
-            Assert.IsTrue((new XmlDeserializer<Employee>()).Test(@"..\..\..\Files\Xml\Employees.xml", employees));
+            Assert.IsTrue((new XmlDeserializer<Employee>()).ReadValuesAndCompareWithCollection(@"..\..\..\Files\Xml\Employees.xml", employees));
         }
 
         [TestMethod]
@@ -54,7 +53,7 @@ namespace SIC.Labs.Second.Components.Tests.ReadersWritersTests
             };
 
             //assert
-            Assert.IsTrue((new XmlDeserializer<Commodity>()).Test(@"..\..\..\Files\Xml\Commodities.xml", commodities));
+            Assert.IsTrue((new XmlDeserializer<Commodity>()).ReadValuesAndCompareWithCollection(@"..\..\..\Files\Xml\Commodities.xml", commodities));
         }
 
         [TestMethod]
@@ -68,7 +67,7 @@ namespace SIC.Labs.Second.Components.Tests.ReadersWritersTests
             };
 
             //assert
-            Assert.IsTrue((new XmlDeserializer<StockItem>()).Test(@"..\..\..\Files\Xml\StockItems.xml", stockItems));
+            Assert.IsTrue((new XmlDeserializer<StockItem>()).ReadValuesAndCompareWithCollection(@"..\..\..\Files\Xml\StockItems.xml", stockItems));
         }
 
         [TestMethod]
@@ -82,7 +81,7 @@ namespace SIC.Labs.Second.Components.Tests.ReadersWritersTests
             };
 
             //assert
-            Assert.IsTrue( (new XmlDeserializer<Stock>()).Test(@"..\..\..\Files\Xml\Stock.xml", stocks));
+            Assert.IsTrue( (new XmlDeserializer<Stock>()).ReadValuesAndCompareWithCollection(@"..\..\..\Files\Xml\Stock.xml", stocks));
         }
 
         [TestMethod]
@@ -91,14 +90,20 @@ namespace SIC.Labs.Second.Components.Tests.ReadersWritersTests
             //arrange
             List<Order> orders = new List<Order>()
             {
-                new Order { CreationDate = DateTime.Parse("24.04.2015"), ModificationDate = DateTime.Parse("24.05.2015"),
-                    Count = 55, FullPrice = 25.0M, Status = OrderStatus.Finished, StockItemId = 1, EmployeeId = 1  }
+                new Order {
+                    CreationDate = new DateTime(2015,04,04),
+                    ModificationDate = new DateTime(2015,04,10),
+                    Count = 55,
+                    FullPrice = 25.0M,
+                    Status = OrderStatus.Finished,
+                    StockItemId = 1,
+                    EmployeeId = 1
+                }
             };
 
             //assert
-            Assert.IsTrue((new XmlDeserializer<Order>()).Test(@"..\..\..\Files\Xml\Orders.xml", orders));
+            Assert.IsTrue((new XmlDeserializer<Order>()).ReadValuesAndCompareWithCollection(@"..\..\..\Files\Xml\Orders.xml", orders));
         }
-
 
     }
 }

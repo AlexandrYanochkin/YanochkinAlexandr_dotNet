@@ -3,7 +3,7 @@ USE [StockDB];
 CREATE TABLE Manufacturer(
 	ID INT PRIMARY KEY IDENTITY,
 	[Name] NVARCHAR(20),
-	Adress NVARCHAR(20),
+	[Address] NVARCHAR(20),
 	PhoneNumber NVARCHAR(20) 
 );	
 
@@ -19,8 +19,8 @@ CREATE TABLE Stock(
 	ID INT PRIMARY KEY IDENTITY,
 	[Name] NVARCHAR(20),
 	[Address] NVARCHAR(20),
-	Allowance INT,
-	CHECK (Allowance >= 0 AND Allowance <= 1)
+	Allowance FLOAT,
+	CHECK (Allowance >= 0.0 AND Allowance <= 1.0)
 );
 
 CREATE TABLE Commodity(
@@ -42,14 +42,14 @@ CREATE TABLE StockItem(
 
 CREATE TABLE [Order](
 	ID INT PRIMARY KEY IDENTITY,
-	CreateDate DATE,
+	CreationDate DATE,
 	ModificationDate DATE,
 	[Status] INT,
 	[Count] INT,
-	FullPrice INT,
+	FullPrice MONEY,
 	StockItemID INT,
 	EmployeeID INT, 
 	FOREIGN KEY (StockItemID) REFERENCES StockItem(ID),
 	FOREIGN KEY (EmployeeID) REFERENCES Employee(ID),
-	CHECK (ModificationDate >= CreateDate)
+	CHECK (ModificationDate >= CreationDate)
 );

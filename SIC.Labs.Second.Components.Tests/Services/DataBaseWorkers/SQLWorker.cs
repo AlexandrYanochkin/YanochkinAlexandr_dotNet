@@ -1,10 +1,11 @@
 ﻿using SIC.Labs.Second.Components.Services.Interfaces;
+using SIC.Labs.Second.Components.Tests.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Text;
 
-namespace SIC.Labs.Second.Components.DAL.MSSQLRepository
+namespace SIC.Labs.Second.Components.Tests.DataBaseWorkers
 {
     public class SQLWorker : IDataBaseWorker, IDisposable
     {
