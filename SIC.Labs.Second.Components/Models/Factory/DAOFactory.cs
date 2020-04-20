@@ -17,7 +17,7 @@ namespace SIC.Labs.Second.Components.Models.Factory
                 default:
                     throw new NotImplementedException("Incorrect Enum Value!");            
             }
-        }
+        }      
 
     }
 }

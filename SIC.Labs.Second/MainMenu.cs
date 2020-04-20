@@ -20,7 +20,6 @@ namespace SIC.Labs.Second
 
         public FileFormat FileFormat { get; set; }
 
-
         public void Menu()
         {
             bool exit = false;
@@ -155,7 +154,6 @@ namespace SIC.Labs.Second
 
             return reader;
         }
-
 
     }
 }

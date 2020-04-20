@@ -4,6 +4,10 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
 
     <IsPackable>false</IsPackable>
+
+    <ApplicationIcon />
+
+    <Win32Resource />
   </PropertyGroup>
 
   <ItemGroup>
@@ -20,5 +24,9 @@
     <Folder Include="Files\Xml\" />
     <Folder Include="Files\Json\" />
   </ItemGroup>
+
+  <Target Name="CopyCustomContent" AfterTargets="AfterBuild">
+    <Copy SourceFiles="App.config" DestinationFiles="$(OutDir)\testhost.dll.config" />
+  </Target>
 
 </Project>

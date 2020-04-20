@@ -22,20 +22,7 @@ namespace SIC.Labs.Second
 
             Console.WriteLine(SQLConnector.ConnectionString);
 
-            Order order = new Order
-            {
-                CreationDate = DateTime.Parse("05-10-2015"),
-                ModificationDate = DateTime.Parse("09-25-2015"),
-                Count = 45,
-                FullPrice = 45.5M,
-                Status = OrderStatus.SentToClient,
-                EmployeeId = 1,
-                StockItemId = 1
-            };
-
-            Console.WriteLine(order.Equals(order));
-
-            //  new MainMenu() { DataAccess = DAOFactory.GetFactory(TypeOfFactory.MSSQL) }.Menu();
+            //new MainMenu() { DataAccess = DAOFactory.GetFactory(TypeOfFactory.MSSQL) }.Menu();
         }
     }
 }

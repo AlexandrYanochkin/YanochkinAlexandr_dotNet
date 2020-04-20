@@ -4,6 +4,7 @@ using SIC.Labs.Second.Components.DAL.Connections;
 using SIC.Labs.Second.Components.Models.DTO;
 using SIC.Labs.Second.Components.Models.Factory;
 using SIC.Labs.Second.Components.Tests.DataBaseWorkers;
+using System.Configuration;
 using System.Threading.Tasks;
 
 namespace SIC.Labs.Second.Components.Tests.MSSQLRepository
