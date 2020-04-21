@@ -20,9 +20,7 @@ namespace SIC.Labs.Second
         {
             Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
 
-            Console.WriteLine(SQLConnector.ConnectionString);
-
-            //new MainMenu() { DataAccess = DAOFactory.GetFactory(TypeOfFactory.MSSQL) }.Menu();
+            new MainMenu() { DataAccess = DAOFactory.GetFactory(TypeOfFactory.MSSQL) }.Menu();
         }
     }
 }
