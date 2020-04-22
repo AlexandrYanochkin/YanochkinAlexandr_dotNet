@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="SIC.Labs.Second.Components.DAL.MSSQLRepository.BaseRepository" Collapsed="true">
+    <Position X="5.5" Y="3" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIQDAAAAAAAAAAAEAAgAAAEAAAAAAAAAAAACA=</HashCode>
+      <FileName>DAL\MSSQLRepository\BaseRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="SIC.Labs.Second.Components.DAL.MSSQLRepository.CommodityRepository" Collapsed="true">
+    <Position X="1.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAAAAAAAAAAAAAAAAAgAAABAAIAAAIA=</HashCode>
+      <FileName>DAL\MSSQLRepository\CommodityRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="SIC.Labs.Second.Components.DAL.MSSQLRepository.EmployeeRepository" Collapsed="true">
+    <Position X="5.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAAAAAAAAAAAAAAAAAgAAABAAIAAAIA=</HashCode>
+      <FileName>DAL\MSSQLRepository\EmployeeRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="SIC.Labs.Second.Components.DAL.MSSQLRepository.ManufacturerRepository" Collapsed="true">
+    <Position X="10" Y="4.5" Width="1.5" />
+    <InheritanceLine Type="SIC.Labs.Second.Components.DAL.MSSQLRepository.BaseRepository" ManuallyRouted="true" FixedFromPoint="true">
+      <Path>
+        <Point X="6.25" Y="3.562" />
+        <Point X="6.25" Y="4.105" />
+        <Point X="10.75" Y="4.105" />
+        <Point X="10.75" Y="5.191" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAAAAAAAAAAAAAAAAAgAAABAAIAAAIA=</HashCode>
+      <FileName>DAL\MSSQLRepository\ManufacturerRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="SIC.Labs.Second.Components.DAL.MSSQLRepository.OrderRepository" Collapsed="true">
+    <Position X="3.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAAAAAAAAAAAAAAAAAgAAABAAIAAAIA=</HashCode>
+      <FileName>DAL\MSSQLRepository\OrderRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="SIC.Labs.Second.Components.DAL.MSSQLRepository.StockItemRepository" Collapsed="true">
+    <Position X="7.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAAAAAAAAAAAAAAAAAgAAABAAIAAAIA=</HashCode>
+      <FileName>DAL\MSSQLRepository\StockItemRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="SIC.Labs.Second.Components.DAL.MSSQLRepository.StockRepository" Collapsed="true">
+    <Position X="12" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAAAAAAAAAAAAAAAAAgAAABAAIAAAIA=</HashCode>
+      <FileName>DAL\MSSQLRepository\StockRepository.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="SIC.Labs.Second.Components.DAL.DAO">
+    <Position X="1.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAAAgAAAAAAAAAiAAAAAAABAAAAACAAAA=</HashCode>
+      <FileName>DAL\DAO.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="SIC.Labs.Second.Components.Services.Interfaces.IRepository&lt;T&gt;">
+    <Position X="11.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgAAAAAAAAAAAAAAAAAAAAAAAAAAgAAABAAIAAAIA=</HashCode>
+      <FileName>Services\Interfaces\IRepository.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

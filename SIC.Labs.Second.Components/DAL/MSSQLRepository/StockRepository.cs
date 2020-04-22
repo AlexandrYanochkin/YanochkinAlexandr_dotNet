@@ -22,7 +22,7 @@ namespace SIC.Labs.Second.Components.DAL.MSSQLRepository
 
         public Task<Stock> ReadAsync(int id)
         {
-            return ReadItemAsync($"SELECT * FROM [Stock] WHERE [ID] = {id}",sqlReader => new Stock
+            return ReadItemAsync($"SELECT * FROM [Stock] WHERE [ID] = {id}", sqlReader => new Stock
             {
                 Id = sqlReader.GetInt32(0),
                 Name = sqlReader.GetString(1),
@@ -41,7 +41,7 @@ namespace SIC.Labs.Second.Components.DAL.MSSQLRepository
         public Task<IEnumerable<Stock>> GetCollectionAsync()
         {
             return ReadItemsAsync($"SELECT * FROM [Stock]", sqlReader => new Stock
-            { 
+            {
                 Id = sqlReader.GetInt32(0),
                 Name = sqlReader.GetString(1),
                 Address = sqlReader.GetString(2),
