@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfStockItem xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <StockItem>
+    <Id>0</Id>
+    <Count>50</Count>
+    <StockId>10</StockId>
+    <CommodityId>5</CommodityId>
+  </StockItem>
+  <StockItem>
+    <Id>0</Id>
+    <Count>25</Count>
+    <StockId>4</StockId>
+    <CommodityId>1</CommodityId>
+  </StockItem>
+</ArrayOfStockItem>

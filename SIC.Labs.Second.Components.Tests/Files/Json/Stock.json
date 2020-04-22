@@ -1,0 +1,14 @@
+[
+  {
+    "Id": 0,
+    "Name": "StockFirst",
+    "Address": "AdressFirst",
+    "Allowance": 0.45
+  },
+  {
+    "Id": 0,
+    "Name": "StockSecond",
+    "Address": "AdressSecond",
+    "Allowance": 0.25
+  }
+]

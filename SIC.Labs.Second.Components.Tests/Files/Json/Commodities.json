@@ -1,0 +1,26 @@
+[
+  {
+    "Id": 0,
+    "Name": "CommodityFirst",
+    "Price": 25.5,
+    "ManufacturerId": 5
+  },
+  {
+    "Id": 0,
+    "Name": "CommoditySecond",
+    "Price": 20.2,
+    "ManufacturerId": 10
+  },
+  {
+    "Id": 0,
+    "Name": "CommodityThird",
+    "Price": 45.5,
+    "ManufacturerId": 15
+  },
+  {
+    "Id": 0,
+    "Name": "CommodityFour",
+    "Price": 15.0,
+    "ManufacturerId": 20
+  }
+]

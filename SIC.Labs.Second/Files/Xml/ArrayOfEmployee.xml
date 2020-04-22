@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfEmployee xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Employee>
+    <Id>9</Id>
+    <FullName>Alex</FullName>
+    <Age>25</Age>
+    <PhoneNumber>+375295552978</PhoneNumber>
+  </Employee>
+  <Employee>
+    <Id>11</Id>
+    <FullName>Alex</FullName>
+    <Age>25</Age>
+    <PhoneNumber>+375295552978</PhoneNumber>
+  </Employee>
+  <Employee>
+    <Id>13</Id>
+    <FullName>Paul</FullName>
+    <Age>28</Age>
+    <PhoneNumber>+7775558998</PhoneNumber>
+  </Employee>
+</ArrayOfEmployee>

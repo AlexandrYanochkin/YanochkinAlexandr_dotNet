@@ -1,0 +1,20 @@
+[
+  {
+    "Id": 0,
+    "FullName": "EmployeeFirst",
+    "Age": 25,
+    "PhoneNumber": "+375295329911"
+  },
+  {
+    "Id": 0,
+    "FullName": "EmployeeSecond",
+    "Age": 25,
+    "PhoneNumber": "+375295329922"
+  },
+  {
+    "Id": 0,
+    "FullName": "EmployeeThird",
+    "Age": 25,
+    "PhoneNumber": "+375295329933"
+  }
+]
