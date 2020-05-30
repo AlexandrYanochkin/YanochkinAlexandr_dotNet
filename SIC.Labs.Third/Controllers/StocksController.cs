@@ -14,18 +14,18 @@ namespace SIC.Labs.Third.Controllers
 {
     public class StocksController : Controller
     {
-        public DAO DataAccess { get; set; }
+        private readonly DAO _dataAccess;
 
         public StocksController(DAO dataAccess)
         {
-            DataAccess = dataAccess;
+            _dataAccess = dataAccess;
         }
 
 
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var stockCollection = (await DataAccess.Stocks.GetCollectionAsync()).MapCollection<Stock, StockViewModel>();
+            var stockCollection = (await _dataAccess.Stocks.GetCollectionAsync()).MapCollection<Stock, StockViewModel>();
 
             return View(stockCollection);
         }
@@ -33,7 +33,7 @@ namespace SIC.Labs.Third.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            var stock = (await DataAccess.Stocks.ReadAsync(id)).Map<Stock, StockViewModel>();
+            var stock = (await _dataAccess.Stocks.ReadAsync(id)).Map<Stock, StockViewModel>();
 
             return View(stock);
         }
@@ -55,7 +55,7 @@ namespace SIC.Labs.Third.Controllers
 
                 var stockForAdd = stock.Map<StockViewModel, Stock>();
 
-                await DataAccess.Stocks.CreateAsync(stockForAdd);
+                await _dataAccess.Stocks.CreateAsync(stockForAdd);
 
 
                 return RedirectToAction(nameof(Index));
@@ -69,7 +69,7 @@ namespace SIC.Labs.Third.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            var stock = (await DataAccess.Stocks.ReadAsync(id)).Map<Stock, StockViewModel>();
+            var stock = (await _dataAccess.Stocks.ReadAsync(id)).Map<Stock, StockViewModel>();
 
             return View(stock);
         }
@@ -85,7 +85,7 @@ namespace SIC.Labs.Third.Controllers
 
                 var stockForEdit = stock.Map<StockViewModel, Stock>();
 
-                await DataAccess.Stocks.UpdateAsync(stockForEdit);
+                await _dataAccess.Stocks.UpdateAsync(stockForEdit);
 
 
                 return RedirectToAction(nameof(Index));
@@ -99,7 +99,7 @@ namespace SIC.Labs.Third.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
-            var stock = (await DataAccess.Stocks.ReadAsync(id)).Map<Stock, StockViewModel>();
+            var stock = (await _dataAccess.Stocks.ReadAsync(id)).Map<Stock, StockViewModel>();
 
             return View(stock);
         }
@@ -110,7 +110,7 @@ namespace SIC.Labs.Third.Controllers
         {
             try
             {
-                await DataAccess.Stocks.DeleteAsync(stock.Id);
+                await _dataAccess.Stocks.DeleteAsync(stock.Id);
 
                 return RedirectToAction(nameof(Index));
             }

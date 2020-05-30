@@ -14,18 +14,18 @@ namespace SIC.Labs.Third.Controllers
 {
     public class EmployeesController : Controller
     {
-        public DAO DataAccess { get; set; }
+        private readonly DAO _dataAccess;
 
         public EmployeesController(DAO dataAccess)
         {
-            DataAccess = dataAccess;
+            _dataAccess = dataAccess;
         }
 
 
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var employees = await DataAccess.Employees.GetCollectionAsync();
+            var employees = await _dataAccess.Employees.GetCollectionAsync();
 
             return View(employees.MapCollection<Employee, EmployeeViewModel>());
         }
@@ -33,7 +33,7 @@ namespace SIC.Labs.Third.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            var employee = await DataAccess.Employees.ReadAsync(id);
+            var employee = await _dataAccess.Employees.ReadAsync(id);
 
             return View(employee.Map<Employee, EmployeeViewModel>());
         }
@@ -55,7 +55,7 @@ namespace SIC.Labs.Third.Controllers
 
                 var employeeForAdd = employee.Map<EmployeeViewModel, Employee>();
 
-                await DataAccess.Employees.CreateAsync(employeeForAdd);
+                await _dataAccess.Employees.CreateAsync(employeeForAdd);
 
 
                 return RedirectToAction(nameof(Index));
@@ -69,7 +69,7 @@ namespace SIC.Labs.Third.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            var employee = await DataAccess.Employees.ReadAsync(id);
+            var employee = await _dataAccess.Employees.ReadAsync(id);
 
             return View(employee.Map<Employee, EmployeeViewModel>());
         }
@@ -85,7 +85,7 @@ namespace SIC.Labs.Third.Controllers
 
                 var employeeForEdit = employee.Map<EmployeeViewModel, Employee>();
 
-                await DataAccess.Employees.UpdateAsync(employeeForEdit);
+                await _dataAccess.Employees.UpdateAsync(employeeForEdit);
 
 
                 return RedirectToAction(nameof(Index));
@@ -99,7 +99,7 @@ namespace SIC.Labs.Third.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
-            var employee = await DataAccess.Employees.ReadAsync(id);
+            var employee = await _dataAccess.Employees.ReadAsync(id);
 
             return View(employee.Map<Employee, EmployeeViewModel>());
         }
@@ -110,7 +110,7 @@ namespace SIC.Labs.Third.Controllers
         {
             try
             {
-                await DataAccess.Employees.DeleteAsync(employee.Id);
+                await _dataAccess.Employees.DeleteAsync(employee.Id);
 
                 return RedirectToAction(nameof(Index));
             }

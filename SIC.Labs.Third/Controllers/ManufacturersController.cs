@@ -14,18 +14,18 @@ namespace SIC.Labs.Third.Controllers
 {
     public class ManufacturersController : Controller
     {
-        public DAO DataAccess { get; set; }
+        private readonly DAO _dataAccess;
  
         public ManufacturersController(DAO dataAccess)
         {
-            DataAccess = dataAccess;
+            _dataAccess = dataAccess;
         }
 
 
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var manufacturers = await DataAccess.Manufacturers.GetCollectionAsync();
+            var manufacturers = await _dataAccess.Manufacturers.GetCollectionAsync();
 
             return View(manufacturers.MapCollection<Manufacturer, ManufacturerViewModel>());
         }
@@ -33,7 +33,7 @@ namespace SIC.Labs.Third.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            var manufacturer = await DataAccess.Manufacturers.ReadAsync(id);
+            var manufacturer = await _dataAccess.Manufacturers.ReadAsync(id);
 
             return View(manufacturer.Map<Manufacturer, ManufacturerViewModel>());
         }
@@ -55,7 +55,7 @@ namespace SIC.Labs.Third.Controllers
 
                 var manufacturerForAdd = manufacturer.Map<ManufacturerViewModel, Manufacturer>();
 
-                await DataAccess.Manufacturers.CreateAsync(manufacturerForAdd);
+                await _dataAccess.Manufacturers.CreateAsync(manufacturerForAdd);
 
 
                 return RedirectToAction(nameof(Index));
@@ -69,7 +69,7 @@ namespace SIC.Labs.Third.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            var manufacturer = await DataAccess.Manufacturers.ReadAsync(id);       
+            var manufacturer = await _dataAccess.Manufacturers.ReadAsync(id);       
 
             return View(manufacturer.Map<Manufacturer, ManufacturerViewModel>());
         }
@@ -85,7 +85,7 @@ namespace SIC.Labs.Third.Controllers
 
                 var manufacturerForEdit = manufacturer.Map<ManufacturerViewModel, Manufacturer>();
 
-                await DataAccess.Manufacturers.UpdateAsync(manufacturerForEdit);
+                await _dataAccess.Manufacturers.UpdateAsync(manufacturerForEdit);
 
 
                 return RedirectToAction(nameof(Index));
@@ -99,7 +99,7 @@ namespace SIC.Labs.Third.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
-            var manufacturer = await DataAccess.Manufacturers.ReadAsync(id);
+            var manufacturer = await _dataAccess.Manufacturers.ReadAsync(id);
 
             return View(manufacturer.Map<Manufacturer, ManufacturerViewModel>());
         }
@@ -110,7 +110,7 @@ namespace SIC.Labs.Third.Controllers
         {
             try
             {
-                await DataAccess.Manufacturers.DeleteAsync(manufacturer.Id);
+                await _dataAccess.Manufacturers.DeleteAsync(manufacturer.Id);
 
                 return RedirectToAction(nameof(Index));
             }

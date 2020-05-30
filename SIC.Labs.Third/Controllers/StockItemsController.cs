@@ -14,18 +14,18 @@ namespace SIC.Labs.Third.Controllers
 {
     public class StockItemsController : Controller
     {
-        public DAO DataAccess { get; set; }
+        private readonly DAO _dataAccess;
 
         public StockItemsController(DAO dataAccess)
         {
-            DataAccess = dataAccess;
+            _dataAccess = dataAccess;
         }
 
 
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var stockItems = (await DataAccess.StockItems.GetCollectionAsync())
+            var stockItems = (await _dataAccess.StockItems.GetCollectionAsync())
               .MapCollection<StockItem, StockItemViewModel>();
 
             foreach(var stockItem in stockItems)
@@ -40,7 +40,7 @@ namespace SIC.Labs.Third.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            var stockItem = (await DataAccess.StockItems.ReadAsync(id))
+            var stockItem = (await _dataAccess.StockItems.ReadAsync(id))
               .Map<StockItem, StockItemViewModel>();
 
             await GetFieldsForStockItem(stockItem);
@@ -71,7 +71,7 @@ namespace SIC.Labs.Third.Controllers
 
                 var stockItemForAdd = stockItem.Map<StockItemViewModel, StockItem>();
 
-                await DataAccess.StockItems.CreateAsync(stockItemForAdd);
+                await _dataAccess.StockItems.CreateAsync(stockItemForAdd);
 
 
                 return RedirectToAction(nameof(Index));
@@ -86,7 +86,7 @@ namespace SIC.Labs.Third.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            var stockItem = (await DataAccess.StockItems.ReadAsync(id))
+            var stockItem = (await _dataAccess.StockItems.ReadAsync(id))
                .Map<StockItem, StockItemViewModel>();
 
             await SetDropDownLists(stockItem);
@@ -105,7 +105,7 @@ namespace SIC.Labs.Third.Controllers
 
                 var stockItemForEdit = stockItem.Map<StockItemViewModel, StockItem>();
 
-                await DataAccess.StockItems.UpdateAsync(stockItemForEdit);
+                await _dataAccess.StockItems.UpdateAsync(stockItemForEdit);
 
 
                 return RedirectToAction(nameof(Index));
@@ -121,7 +121,7 @@ namespace SIC.Labs.Third.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
-            var stockItem = (await DataAccess.StockItems.ReadAsync(id))
+            var stockItem = (await _dataAccess.StockItems.ReadAsync(id))
                 .Map<StockItem, StockItemViewModel>();
 
             await GetFieldsForStockItem(stockItem);
@@ -136,7 +136,7 @@ namespace SIC.Labs.Third.Controllers
         {
             try
             {
-                await DataAccess.StockItems.DeleteAsync(stockItem.Id);
+                await _dataAccess.StockItems.DeleteAsync(stockItem.Id);
 
                 return RedirectToAction(nameof(Index));
             }
@@ -148,19 +148,19 @@ namespace SIC.Labs.Third.Controllers
 
         private async Task GetFieldsForStockItem(StockItemViewModel stockItem)
         {
-            stockItem.Stock = (await DataAccess.Stocks.ReadAsync(stockItem.StockId))
+            stockItem.Stock = (await _dataAccess.Stocks.ReadAsync(stockItem.StockId))
               .Map<Stock, StockViewModel>();
 
-            stockItem.Commodity = (await DataAccess.Commodities.ReadAsync(stockItem.CommodityId))
+            stockItem.Commodity = (await _dataAccess.Commodities.ReadAsync(stockItem.CommodityId))
                 .Map<Commodity, CommodityViewModel>();
         }
 
         private async Task SetDropDownLists(StockItemViewModel stockItem)
         {
 
-            stockItem.Stocks = new SelectList(await DataAccess.Stocks.GetCollectionAsync(), "Id", "Name");
+            stockItem.Stocks = new SelectList(await _dataAccess.Stocks.GetCollectionAsync(), "Id", "Name");
 
-            stockItem.Commodities = new SelectList(await DataAccess.Commodities.GetCollectionAsync(), "Id", "Name");
+            stockItem.Commodities = new SelectList(await _dataAccess.Commodities.GetCollectionAsync(), "Id", "Name");
         }
 
     }

@@ -1,38 +1,33 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SIC.Labs.Second.Components.DAL;
 using SIC.Labs.Second.Components.Models.DTO;
 using SIC.Labs.Third.Models;
-using AutoMapper;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SIC.Labs.Second.Components.Models.Exceptions;
-using Microsoft.Extensions.Logging;
 
 namespace SIC.Labs.Third.Controllers
 {
     public class CommoditiesController : Controller
     {
-        public DAO DataAccess { get; set; }
+        private readonly DAO _dataAccess;
 
         public CommoditiesController(DAO dataAccess)
         {
-            DataAccess = dataAccess;
+            _dataAccess = dataAccess;
         }
 
 
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var commodities = (await DataAccess.Commodities.GetCollectionAsync())
+            var commodities = (await _dataAccess.Commodities.GetCollectionAsync())
                 .MapCollection<Commodity, CommodityViewModel>();
 
             foreach (var commodity in commodities)
             {
-                commodity.Manufacturer = (await DataAccess.Manufacturers.ReadAsync(commodity.ManufacturerId))
+                commodity.Manufacturer = (await _dataAccess.Manufacturers.ReadAsync(commodity.ManufacturerId))
                     .Map<Manufacturer, ManufacturerViewModel>();
             }
 
@@ -43,9 +38,9 @@ namespace SIC.Labs.Third.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            var commodity = (await DataAccess.Commodities.ReadAsync(id)).Map<Commodity, CommodityViewModel>();
+            var commodity = (await _dataAccess.Commodities.ReadAsync(id)).Map<Commodity, CommodityViewModel>();
 
-            commodity.Manufacturer = (await DataAccess.Manufacturers.ReadAsync(commodity.ManufacturerId))
+            commodity.Manufacturer = (await _dataAccess.Manufacturers.ReadAsync(commodity.ManufacturerId))
                 .Map<Manufacturer, ManufacturerViewModel>();
 
             return View(commodity);
@@ -56,7 +51,7 @@ namespace SIC.Labs.Third.Controllers
         {
             CommodityViewModel commodity = new CommodityViewModel();
 
-            var manufacturers = await DataAccess.Manufacturers.GetCollectionAsync();
+            var manufacturers = await _dataAccess.Manufacturers.GetCollectionAsync();
 
             commodity
                 .Manufacturers = new SelectList(manufacturers, "Id", "Name");
@@ -76,14 +71,14 @@ namespace SIC.Labs.Third.Controllers
 
                 var commodityForAdd = commodity.Map<CommodityViewModel, Commodity>();
 
-                await DataAccess.Commodities.CreateAsync(commodityForAdd);
+                await _dataAccess.Commodities.CreateAsync(commodityForAdd);
 
 
                 return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
             {
-                commodity.Manufacturers = new SelectList(await DataAccess.Manufacturers.GetCollectionAsync(), "Id", "Name");
+                commodity.Manufacturers = new SelectList(await _dataAccess.Manufacturers.GetCollectionAsync(), "Id", "Name");
                 return View(commodity);
             }
         }
@@ -91,9 +86,9 @@ namespace SIC.Labs.Third.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            var commodity = (await DataAccess.Commodities.ReadAsync(id)).Map<Commodity, CommodityViewModel>();       
+            var commodity = (await _dataAccess.Commodities.ReadAsync(id)).Map<Commodity, CommodityViewModel>();       
 
-            var manufacturers = await DataAccess.Manufacturers.GetCollectionAsync();
+            var manufacturers = await _dataAccess.Manufacturers.GetCollectionAsync();
 
             commodity
                 .Manufacturers = new SelectList(manufacturers, "Id", "Name");
@@ -112,7 +107,7 @@ namespace SIC.Labs.Third.Controllers
 
                 var commodityForEdit = commodity.Map<CommodityViewModel, Commodity>();
 
-                await DataAccess.Commodities.UpdateAsync(commodityForEdit);
+                await _dataAccess.Commodities.UpdateAsync(commodityForEdit);
 
 
                 return RedirectToAction(nameof(Index));
@@ -120,7 +115,7 @@ namespace SIC.Labs.Third.Controllers
             catch(Exception ex)
             {
                 commodity.Manufacturers = 
-                    new SelectList(await DataAccess.Manufacturers.GetCollectionAsync(), "Id", "Name");
+                    new SelectList(await _dataAccess.Manufacturers.GetCollectionAsync(), "Id", "Name");
                 return View(commodity);
             }
         }
@@ -128,9 +123,9 @@ namespace SIC.Labs.Third.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
-            var commodity = (await DataAccess.Commodities.ReadAsync(id)).Map<Commodity, CommodityViewModel>();
+            var commodity = (await _dataAccess.Commodities.ReadAsync(id)).Map<Commodity, CommodityViewModel>();
 
-            commodity.Manufacturer = (await DataAccess.Manufacturers.ReadAsync(commodity.ManufacturerId))
+            commodity.Manufacturer = (await _dataAccess.Manufacturers.ReadAsync(commodity.ManufacturerId))
                 .Map<Manufacturer, ManufacturerViewModel>();
 
             return View(commodity);
@@ -142,7 +137,7 @@ namespace SIC.Labs.Third.Controllers
         {
             try
             {
-                await DataAccess.Commodities.DeleteAsync(commodity.Id);
+                await _dataAccess.Commodities.DeleteAsync(commodity.Id);
 
                 return RedirectToAction(nameof(Index));
             }
