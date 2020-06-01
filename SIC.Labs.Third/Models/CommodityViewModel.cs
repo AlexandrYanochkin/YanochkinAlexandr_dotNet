@@ -19,7 +19,6 @@ namespace SIC.Labs.Third.Models
         [Required]
         public int ManufacturerId { get; set; }
 
-
         public ManufacturerViewModel Manufacturer{ get; set; }
 
         public SelectList Manufacturers { get; set; }
