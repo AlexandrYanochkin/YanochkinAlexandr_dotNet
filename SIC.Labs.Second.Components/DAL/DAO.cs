@@ -11,7 +11,7 @@ namespace SIC.Labs.Second.Components.DAL
         public IRepository<Employee> Employees { get; set; }
         public IRepository<Commodity> Commodities { get; set; }
         public IRepository<Manufacturer> Manufacturers { get; set; }
-
+         
         public DAO(IRepository<Stock> stocks,
             IRepository<StockItem> stockItems,
             IRepository<Order> orders,
