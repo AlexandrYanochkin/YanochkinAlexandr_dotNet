@@ -1,0 +1,42 @@
+﻿@model SIC.Labs.Third.Models.ViewModels.StockItemViewModel
+
+@{
+    ViewData["Title"] = "Create Stock Item";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="CommodityId" class="control-label"></label>
+                <select asp-for="CommodityId" asp-items="Model.Commodities" class="form-control"></select>
+                <span asp-validation-for="CommodityId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StockId" class="control-label"></label>
+                <select asp-for="StockId" asp-items="Model.Stocks" class="form-control"></select>
+                <span asp-validation-for="StockId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Count" class="control-label"></label>
+                <input asp-for="Count" class="form-control" />
+                <span asp-validation-for="Count" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

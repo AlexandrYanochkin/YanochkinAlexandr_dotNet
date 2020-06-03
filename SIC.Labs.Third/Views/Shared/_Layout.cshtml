@@ -1,0 +1,57 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+
+</head>
+
+<body class="d-flex flex-column h-100">
+    <header>
+        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+            <a class="navbar-brand" asp-controller="Home" asp-action="Index">Stock</a>
+
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Stocks" asp-action="Index">Stocks</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Employees" asp-action="Index">Employees</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Manufacturers" asp-action="Index">Manufacturers</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Commodities" asp-action="Index">Commodities</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="StockItems" asp-action="Index">Stock Items</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Orders" asp-action="Index">Orders</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <br />
+    <br />
+    <br />
+
+    <div class="container mt-5">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+
+    </div>
+
+    <br />
+    <script src="~/lib/jquery/jquery.min.js"></script>
+    @(await RenderSectionAsync("Scripts", false))
+</body>
+
+</html>
