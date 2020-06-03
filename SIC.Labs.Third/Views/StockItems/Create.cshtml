@@ -13,12 +13,12 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="CommodityId" class="control-label"></label>
-                <select asp-for="CommodityId" asp-items="Model.Commodities" class="form-control" ></select>
+                <select asp-for="CommodityId" asp-items="Model.Commodities" class="form-control"></select>
                 <span asp-validation-for="CommodityId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="StockId" class="control-label"></label>
-                <select asp-for="StockId" asp-items="Model.Stocks" class="form-control" ></select>
+                <select asp-for="StockId" asp-items="Model.Stocks" class="form-control"></select>
                 <span asp-validation-for="StockId" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -37,3 +37,6 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

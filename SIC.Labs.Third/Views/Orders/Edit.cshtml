@@ -13,7 +13,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="CreationDate" class="control-label"></label>
-                <input asp-for="CreationDate" class="form-control" type="date"/>
+                <input asp-for="CreationDate" class="form-control" type="date" />
                 <span asp-validation-for="CreationDate" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -23,7 +23,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Status" class="control-label"></label>
-                <select asp-for="Status" asp-items="Model.Statuses" class="form-control" ></select>
+                <select asp-for="Status" asp-items="Model.Statuses" class="form-control"></select>
                 <span asp-validation-for="Status" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -38,12 +38,12 @@
             </div>
             <div class="form-group">
                 <label asp-for="EmployeeId" class="control-label"></label>
-                <select asp-for="EmployeeId" asp-items="Model.Employees" class="form-control" ></select>
+                <select asp-for="EmployeeId" asp-items="Model.Employees" class="form-control"></select>
                 <span asp-validation-for="EmployeeId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="StockItemId" class="control-label"></label>
-                <select asp-for="StockItemId" asp-items="Model.StockItems" class="form-control" ></select>
+                <select asp-for="StockItemId" asp-items="Model.StockItems" class="form-control"></select>
                 <span asp-validation-for="StockItemId" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -57,3 +57,6 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
