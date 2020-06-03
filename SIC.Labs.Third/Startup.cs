@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using SIC.Labs.Second.Components.DAL;
 using SIC.Labs.Second.Components.Models.Factory;
+using SIC.Labs.Third.Models;
+using Microsoft.Extensions.Logging;
 
 namespace SIC.Labs.Third
 {
@@ -16,7 +14,8 @@ namespace SIC.Labs.Third
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-            services.AddSingleton<DAO>(DAOFactory.GetFactory(TypeOfFactory.MSSQL));
+            services.AddScoped<DAO>(provider => DAOFactory.GetFactory(TypeOfFactory.MSSQL));
+            services.AddAutoMapper(typeof(MapperProfile));
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

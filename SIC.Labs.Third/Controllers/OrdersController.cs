@@ -2,14 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Logging;
 using SIC.Labs.Second.Components.DAL;
 using SIC.Labs.Second.Components.Models.DTO;
 using SIC.Labs.Second.Components.Models.Exceptions;
 using SIC.Labs.Second.Components.Services.Validators;
 using SIC.Labs.Third.Models;
+using SIC.Labs.Third.Models.ViewModels;
 
 namespace SIC.Labs.Third.Controllers
 {
@@ -17,17 +20,22 @@ namespace SIC.Labs.Third.Controllers
     {
         private readonly DAO _dataAccess;
 
-        public OrdersController(DAO dataAccess)
+        private readonly IMapper _mapper;
+
+        private readonly ILogger<CommoditiesController> _logger;
+
+        public OrdersController(DAO dataAccess, IMapper mapper, ILogger<CommoditiesController> logger)
         {
             _dataAccess = dataAccess;
+            _mapper = mapper;
+            _logger = logger;
         }
-
 
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var orders = (await _dataAccess.Orders.GetCollectionAsync())
-                .MapCollection<Order, OrderViewModel>();
+            var orders = _mapper
+                .Map<List<OrderViewModel>>(await _dataAccess.Orders.GetCollectionAsync());
 
             foreach(var order in orders)
             {
@@ -40,8 +48,8 @@ namespace SIC.Labs.Third.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            var order = (await _dataAccess.Orders.ReadAsync(id))
-                    .Map<Order, OrderViewModel>();
+            var order = _mapper
+                    .Map<Order, OrderViewModel>(await _dataAccess.Orders.ReadAsync(id));
 
             await GetFieldsForOrder(order);
 
@@ -64,7 +72,7 @@ namespace SIC.Labs.Third.Controllers
         {
             try
             {
-                var orderForAdd = order.Map<OrderViewModel, Order>();
+                var orderForAdd = _mapper.Map<OrderViewModel, Order>(order);
 
                 orderForAdd.Validate();
 
@@ -76,8 +84,9 @@ namespace SIC.Labs.Third.Controllers
 
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            catch(Exception ex)
             {
+                _logger.LogError(ex, ex.Message);
                 await GetListsForView(order);
                 return View(order);
             }
@@ -86,8 +95,8 @@ namespace SIC.Labs.Third.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            OrderViewModel order = (await _dataAccess.Orders.ReadAsync(id))
-                .Map<Order, OrderViewModel>();
+            OrderViewModel order = _mapper
+                .Map<Order, OrderViewModel>(await _dataAccess.Orders.ReadAsync(id));
 
             await GetListsForView(order);
 
@@ -100,7 +109,7 @@ namespace SIC.Labs.Third.Controllers
         {
             try
             {
-                var orderForEdit = order.Map<OrderViewModel, Order>();
+                var orderForEdit = _mapper.Map<OrderViewModel, Order>(order);
 
                 orderForEdit.Validate();
 
@@ -113,8 +122,9 @@ namespace SIC.Labs.Third.Controllers
 
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            catch(Exception ex)
             {
+                _logger.LogError(ex, ex.Message);
                 await GetListsForView(order);
                 return View(order);
             }
@@ -123,8 +133,8 @@ namespace SIC.Labs.Third.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
-            var order = (await _dataAccess.Orders.ReadAsync(id))
-                        .Map<Order, OrderViewModel>();
+            var order = _mapper
+                        .Map<Order, OrderViewModel>(await _dataAccess.Orders.ReadAsync(id));
 
             await GetFieldsForOrder(order);
 
@@ -143,31 +153,32 @@ namespace SIC.Labs.Third.Controllers
             }
             catch(Exception ex)
             {
+                _logger.LogError(ex, ex.Message);
                 return View(order);
             }
         }
 
         private async Task GetFieldsForOrder(OrderViewModel order)
         {
-            order.Employee = (await _dataAccess.Employees.ReadAsync(order.EmployeeId))
-                .Map<Employee, EmployeeViewModel>();
+            order.Employee = _mapper
+                .Map<Employee, EmployeeViewModel>(await _dataAccess.Employees.ReadAsync(order.EmployeeId));
 
-            order.StockItem = (await _dataAccess.StockItems.ReadAsync(order.StockItemId))
-                .Map<StockItem, StockItemViewModel>();
+            order.StockItem = _mapper
+                .Map<StockItem, StockItemViewModel>(await _dataAccess.StockItems.ReadAsync(order.StockItemId));
 
-            order.StockItem.Commodity = (await _dataAccess.Commodities.ReadAsync(order.StockItem.CommodityId))
-                    .Map<Commodity, CommodityViewModel>();
+            order.StockItem.Commodity = _mapper
+                    .Map<Commodity, CommodityViewModel>(await _dataAccess.Commodities.ReadAsync(order.StockItem.CommodityId));
         }
 
         private async Task GetListsForView(OrderViewModel order)
         {
-            var stockItems = (await _dataAccess.StockItems.GetCollectionAsync())
-                .MapCollection<StockItem, StockItemViewModel>();
+            var stockItems = _mapper
+                .Map<List<StockItemViewModel>>(await _dataAccess.StockItems.GetCollectionAsync());
 
             foreach(var stockItem in stockItems)
             {
-                stockItem.Commodity = (await _dataAccess.Commodities.ReadAsync(stockItem.CommodityId))
-                                .Map<Commodity, CommodityViewModel>();
+                stockItem.Commodity = _mapper
+                                .Map<Commodity, CommodityViewModel>(await _dataAccess.Commodities.ReadAsync(stockItem.CommodityId));
             }
 
             var collectionForView = stockItems.Select(t => new { t.Id, StockItemName = t.Commodity.Name });

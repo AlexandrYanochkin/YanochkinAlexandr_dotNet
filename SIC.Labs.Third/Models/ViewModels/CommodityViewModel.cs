@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SIC.Labs.Third.Models
+namespace SIC.Labs.Third.Models.ViewModels
 {
     public class CommodityViewModel
     {
@@ -18,7 +18,6 @@ namespace SIC.Labs.Third.Models
 
         [Required]
         public int ManufacturerId { get; set; }
-
 
         public ManufacturerViewModel Manufacturer{ get; set; }
 

@@ -5,29 +5,36 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using SIC.Labs.Second.Components.DAL;
 using SIC.Labs.Second.Components.Models.DTO;
 using SIC.Labs.Second.Components.Models.Exceptions;
 using SIC.Labs.Third.Models;
+using SIC.Labs.Third.Models.ViewModels;
 
 namespace SIC.Labs.Third.Controllers
 {
     public class ManufacturersController : Controller
     {
         private readonly DAO _dataAccess;
- 
-        public ManufacturersController(DAO dataAccess)
+
+        private readonly IMapper _mapper;
+
+        private readonly ILogger<CommoditiesController> _logger;
+
+        public ManufacturersController(DAO dataAccess, IMapper mapper, ILogger<CommoditiesController> logger)
         {
             _dataAccess = dataAccess;
+            _mapper = mapper;
+            _logger = logger;
         }
-
 
         [HttpGet]
         public async Task<IActionResult> Index()
         {
             var manufacturers = await _dataAccess.Manufacturers.GetCollectionAsync();
 
-            return View(manufacturers.MapCollection<Manufacturer, ManufacturerViewModel>());
+            return View(_mapper.Map<List<ManufacturerViewModel>>(manufacturers));
         }
 
         [HttpGet]
@@ -35,7 +42,7 @@ namespace SIC.Labs.Third.Controllers
         {
             var manufacturer = await _dataAccess.Manufacturers.ReadAsync(id);
 
-            return View(manufacturer.Map<Manufacturer, ManufacturerViewModel>());
+            return View(_mapper.Map<Manufacturer, ManufacturerViewModel>(manufacturer));
         }
 
         [HttpGet]
@@ -53,7 +60,7 @@ namespace SIC.Labs.Third.Controllers
                 if (!ModelState.IsValid)
                     throw new ManufacturerException("Manufacturer model isn't valid!!!");
 
-                var manufacturerForAdd = manufacturer.Map<ManufacturerViewModel, Manufacturer>();
+                var manufacturerForAdd = _mapper.Map<ManufacturerViewModel, Manufacturer>(manufacturer);
 
                 await _dataAccess.Manufacturers.CreateAsync(manufacturerForAdd);
 
@@ -62,7 +69,8 @@ namespace SIC.Labs.Third.Controllers
             }
             catch (Exception ex)
             {
-                return View();
+                _logger.LogError(ex, ex.Message);
+                return View(manufacturer);
             }
         }
 
@@ -71,7 +79,7 @@ namespace SIC.Labs.Third.Controllers
         {
             var manufacturer = await _dataAccess.Manufacturers.ReadAsync(id);       
 
-            return View(manufacturer.Map<Manufacturer, ManufacturerViewModel>());
+            return View(_mapper.Map<Manufacturer, ManufacturerViewModel>(manufacturer));
         }
 
         [HttpPost]
@@ -83,7 +91,7 @@ namespace SIC.Labs.Third.Controllers
                 if (!ModelState.IsValid)
                     throw new ManufacturerException("Manufacturer model isn't valid!!!");
 
-                var manufacturerForEdit = manufacturer.Map<ManufacturerViewModel, Manufacturer>();
+                var manufacturerForEdit = _mapper.Map<ManufacturerViewModel, Manufacturer>(manufacturer);
 
                 await _dataAccess.Manufacturers.UpdateAsync(manufacturerForEdit);
 
@@ -92,7 +100,8 @@ namespace SIC.Labs.Third.Controllers
             }
             catch (Exception ex)
             {
-                return View();
+                _logger.LogError(ex, ex.Message);
+                return View(manufacturer);
             }
         }
 
@@ -101,7 +110,7 @@ namespace SIC.Labs.Third.Controllers
         {
             var manufacturer = await _dataAccess.Manufacturers.ReadAsync(id);
 
-            return View(manufacturer.Map<Manufacturer, ManufacturerViewModel>());
+            return View(_mapper.Map<Manufacturer, ManufacturerViewModel>(manufacturer));
         }
 
         [HttpPost]
@@ -116,7 +125,8 @@ namespace SIC.Labs.Third.Controllers
             }
             catch (Exception ex)
             {
-                return View();
+                _logger.LogError(ex, ex.Message);
+                return View(manufacturer);
             }
         }
 

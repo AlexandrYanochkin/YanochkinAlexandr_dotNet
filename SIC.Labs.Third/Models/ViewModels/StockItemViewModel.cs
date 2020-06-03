@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SIC.Labs.Third.Models
+namespace SIC.Labs.Third.Models.ViewModels
 {
     public class StockItemViewModel
     {

@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Microsoft.Extensions.Logging;
 using SIC.Labs.Second.Components.DAL;
 using SIC.Labs.Second.Components.Models.DTO;
 using SIC.Labs.Second.Components.Models.Exceptions;
 using SIC.Labs.Third.Models;
+using SIC.Labs.Third.Models.ViewModels;
 
 namespace SIC.Labs.Third.Controllers
 {
@@ -16,18 +19,23 @@ namespace SIC.Labs.Third.Controllers
     {
         private readonly DAO _dataAccess;
 
-        public EmployeesController(DAO dataAccess)
+        private readonly IMapper _mapper;
+
+        private readonly ILogger<CommoditiesController> _logger;
+
+        public EmployeesController(DAO dataAccess, IMapper mapper, ILogger<CommoditiesController> logger)
         {
             _dataAccess = dataAccess;
+            _mapper = mapper;
+            _logger = logger;
         }
-
 
         [HttpGet]
         public async Task<IActionResult> Index()
         {
             var employees = await _dataAccess.Employees.GetCollectionAsync();
 
-            return View(employees.MapCollection<Employee, EmployeeViewModel>());
+            return View(_mapper.Map<List<EmployeeViewModel>>(employees));
         }
 
         [HttpGet]
@@ -35,7 +43,7 @@ namespace SIC.Labs.Third.Controllers
         {
             var employee = await _dataAccess.Employees.ReadAsync(id);
 
-            return View(employee.Map<Employee, EmployeeViewModel>());
+            return View(_mapper.Map<Employee, EmployeeViewModel>(employee));
         }
 
         [HttpGet]
@@ -53,7 +61,7 @@ namespace SIC.Labs.Third.Controllers
                 if (!ModelState.IsValid)
                      throw new EmployeeException("Incorrect employee!!!");
 
-                var employeeForAdd = employee.Map<EmployeeViewModel, Employee>();
+                var employeeForAdd = _mapper.Map<EmployeeViewModel, Employee>(employee);
 
                 await _dataAccess.Employees.CreateAsync(employeeForAdd);
 
@@ -62,7 +70,8 @@ namespace SIC.Labs.Third.Controllers
             }
             catch (Exception ex)
             {
-                return View();
+                _logger.LogError(ex, ex.Message);
+                return View(employee);
             }
         }
 
@@ -71,7 +80,7 @@ namespace SIC.Labs.Third.Controllers
         {
             var employee = await _dataAccess.Employees.ReadAsync(id);
 
-            return View(employee.Map<Employee, EmployeeViewModel>());
+            return View(_mapper.Map<Employee, EmployeeViewModel>(employee));
         }
 
         [HttpPost]
@@ -83,16 +92,17 @@ namespace SIC.Labs.Third.Controllers
                 if (!ModelState.IsValid)
                     throw new EmployeeException("Incorrect employee!!!");
 
-                var employeeForEdit = employee.Map<EmployeeViewModel, Employee>();
+                var employeeForEdit = _mapper.Map<EmployeeViewModel, Employee>(employee);
 
                 await _dataAccess.Employees.UpdateAsync(employeeForEdit);
 
 
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            catch(Exception ex)
             {
-                return View();
+                _logger.LogError(ex, ex.Message);
+                return View(employee);
             }
         }
 
@@ -101,7 +111,7 @@ namespace SIC.Labs.Third.Controllers
         {
             var employee = await _dataAccess.Employees.ReadAsync(id);
 
-            return View(employee.Map<Employee, EmployeeViewModel>());
+            return View(_mapper.Map<Employee, EmployeeViewModel>(employee));
         }
 
         [HttpPost]
@@ -114,9 +124,10 @@ namespace SIC.Labs.Third.Controllers
 
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            catch(Exception ex)
             {
-                return View();
+                _logger.LogError(ex, ex.Message);
+                return View(employee);
             }
         }
 

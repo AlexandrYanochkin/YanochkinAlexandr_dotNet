@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Logging;
 using SIC.Labs.Second.Components.DAL;
 using SIC.Labs.Second.Components.Models.DTO;
 using SIC.Labs.Second.Components.Models.Exceptions;
 using SIC.Labs.Third.Models;
+using SIC.Labs.Third.Models.ViewModels;
 
 namespace SIC.Labs.Third.Controllers
 {
@@ -16,17 +19,22 @@ namespace SIC.Labs.Third.Controllers
     {
         private readonly DAO _dataAccess;
 
-        public StockItemsController(DAO dataAccess)
+        private readonly IMapper _mapper;
+
+        private readonly ILogger<CommoditiesController> _logger;
+
+        public StockItemsController(DAO dataAccess, IMapper mapper, ILogger<CommoditiesController> logger)
         {
             _dataAccess = dataAccess;
+            _mapper = mapper;
+            _logger = logger;
         }
-
 
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var stockItems = (await _dataAccess.StockItems.GetCollectionAsync())
-              .MapCollection<StockItem, StockItemViewModel>();
+            var stockItems = _mapper
+              .Map<List<StockItemViewModel>>(await _dataAccess.StockItems.GetCollectionAsync());
 
             foreach(var stockItem in stockItems)
             {
@@ -40,8 +48,8 @@ namespace SIC.Labs.Third.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(int id)
         {
-            var stockItem = (await _dataAccess.StockItems.ReadAsync(id))
-              .Map<StockItem, StockItemViewModel>();
+            var stockItem = _mapper
+              .Map<StockItem, StockItemViewModel>(await _dataAccess.StockItems.ReadAsync(id));
 
             await GetFieldsForStockItem(stockItem);
 
@@ -56,7 +64,6 @@ namespace SIC.Labs.Third.Controllers
 
             await SetDropDownLists(stockItem);
 
-
             return View(stockItem);
         }
 
@@ -69,7 +76,7 @@ namespace SIC.Labs.Third.Controllers
                 if (!ModelState.IsValid)
                     throw new StockItemException("StockItem model isn't valid!!!");
 
-                var stockItemForAdd = stockItem.Map<StockItemViewModel, StockItem>();
+                var stockItemForAdd = _mapper.Map<StockItemViewModel, StockItem>(stockItem);
 
                 await _dataAccess.StockItems.CreateAsync(stockItemForAdd);
 
@@ -78,6 +85,7 @@ namespace SIC.Labs.Third.Controllers
             }
             catch(Exception ex)
             {
+                _logger.LogError(ex, ex.Message);
                 await SetDropDownLists(stockItem);
                 return View(stockItem);
             }
@@ -86,8 +94,8 @@ namespace SIC.Labs.Third.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            var stockItem = (await _dataAccess.StockItems.ReadAsync(id))
-               .Map<StockItem, StockItemViewModel>();
+            var stockItem = _mapper
+               .Map<StockItem, StockItemViewModel>(await _dataAccess.StockItems.ReadAsync(id));
 
             await SetDropDownLists(stockItem);
 
@@ -103,7 +111,7 @@ namespace SIC.Labs.Third.Controllers
                 if (!ModelState.IsValid)
                     throw new StockItemException("StockItem model isn't valid!!!");
 
-                var stockItemForEdit = stockItem.Map<StockItemViewModel, StockItem>();
+                var stockItemForEdit = _mapper.Map<StockItemViewModel, StockItem>(stockItem);
 
                 await _dataAccess.StockItems.UpdateAsync(stockItemForEdit);
 
@@ -112,8 +120,8 @@ namespace SIC.Labs.Third.Controllers
             }
             catch(Exception ex)
             {
+                _logger.LogError(ex, ex.Message);
                 await SetDropDownLists(stockItem);
-
                 return View(stockItem);
             }
         }
@@ -121,8 +129,8 @@ namespace SIC.Labs.Third.Controllers
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
-            var stockItem = (await _dataAccess.StockItems.ReadAsync(id))
-                .Map<StockItem, StockItemViewModel>();
+            var stockItem = _mapper
+                .Map<StockItem, StockItemViewModel>(await _dataAccess.StockItems.ReadAsync(id));
 
             await GetFieldsForStockItem(stockItem);
 
@@ -142,17 +150,18 @@ namespace SIC.Labs.Third.Controllers
             }
             catch(Exception ex)
             {
+                _logger.LogError(ex, ex.Message);
                 return View(stockItem);
             }
         }
 
         private async Task GetFieldsForStockItem(StockItemViewModel stockItem)
         {
-            stockItem.Stock = (await _dataAccess.Stocks.ReadAsync(stockItem.StockId))
-              .Map<Stock, StockViewModel>();
+            stockItem.Stock = _mapper
+              .Map<Stock, StockViewModel>(await _dataAccess.Stocks.ReadAsync(stockItem.StockId));
 
-            stockItem.Commodity = (await _dataAccess.Commodities.ReadAsync(stockItem.CommodityId))
-                .Map<Commodity, CommodityViewModel>();
+            stockItem.Commodity = _mapper
+                .Map<Commodity, CommodityViewModel>(await _dataAccess.Commodities.ReadAsync(stockItem.CommodityId));
         }
 
         private async Task SetDropDownLists(StockItemViewModel stockItem)

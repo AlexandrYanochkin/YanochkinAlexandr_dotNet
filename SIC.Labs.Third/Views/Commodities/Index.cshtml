@@ -1,11 +1,10 @@
-﻿@model IEnumerable<SIC.Labs.Third.Models.CommodityViewModel>
+﻿@model IEnumerable<SIC.Labs.Third.Models.ViewModels.CommodityViewModel>
 
 @{
-    ViewData["Title"] = "Index";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["Title"] = "Commodities";
 }
 
-<h2>Commodities</h2>
+<h2>@ViewData["Title"]</h2>
 
 <p>
     <a asp-action="Create">Create New</a>
@@ -32,9 +31,9 @@
                 @Html.DisplayFor(modelItem => item.Manufacturer.Name)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
 }

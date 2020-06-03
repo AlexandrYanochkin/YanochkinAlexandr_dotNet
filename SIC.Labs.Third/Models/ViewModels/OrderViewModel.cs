@@ -7,7 +7,7 @@ using System.Configuration;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SIC.Labs.Third.Models
+namespace SIC.Labs.Third.Models.ViewModels
 {
     public class OrderViewModel
     {

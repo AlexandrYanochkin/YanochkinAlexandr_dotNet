@@ -1,11 +1,10 @@
-﻿@model SIC.Labs.Third.Models.ManufacturerViewModel
+﻿@model SIC.Labs.Third.Models.ViewModels.ManufacturerViewModel
 
 @{
     ViewData["Title"] = "Details";
-    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Details</h2>
+<h2>@ViewData["Title"]</h2>
 
 <div>
     <hr />
@@ -31,6 +30,6 @@
     </dl>
 </div>
 <div>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    <a asp-action="Details" asp-route="@Model.Id"></a> |
     <a asp-action="Index">Back to List</a>
 </div>
